@@ -1,0 +1,10 @@
+
+framework module SwiftGit2 {
+  umbrella header "SwiftSSH2.h"
+  
+  header "libssh2/libssh2.h"
+  header "libssh2/libssh2_sftp.h"
+  
+	export *
+	module * { export * }
+}
