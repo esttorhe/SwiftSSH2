@@ -15,14 +15,6 @@
 		1172C95F1AF32DF2009467AC /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C95D1AF32DF2009467AC /* Quick.framework */; };
 		1172C9621AF335DF009467AC /* FileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1172C9611AF335DF009467AC /* FileHandle.swift */; };
 		1172C9821AF42668009467AC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C9811AF42668009467AC /* libz.dylib */; };
-		1172C9881AF435DA009467AC /* libssh2_publickey.h in Headers */ = {isa = PBXBuildFile; fileRef = 1172C9841AF435DA009467AC /* libssh2_publickey.h */; };
-		1172C9891AF435DA009467AC /* libssh2_sftp.h in Headers */ = {isa = PBXBuildFile; fileRef = 1172C9851AF435DA009467AC /* libssh2_sftp.h */; };
-		1172C98A1AF435DA009467AC /* libssh2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1172C9861AF435DA009467AC /* libssh2.h */; };
-		1172C98B1AF435DA009467AC /* libssh2_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 1172C9871AF435DA009467AC /* libssh2_config.h */; };
-		1172C98C1AF43634009467AC /* libssh2_publickey.h in Copy libssh2 Headers */ = {isa = PBXBuildFile; fileRef = 1172C9841AF435DA009467AC /* libssh2_publickey.h */; };
-		1172C98D1AF43634009467AC /* libssh2_sftp.h in Copy libssh2 Headers */ = {isa = PBXBuildFile; fileRef = 1172C9851AF435DA009467AC /* libssh2_sftp.h */; };
-		1172C98E1AF43634009467AC /* libssh2.h in Copy libssh2 Headers */ = {isa = PBXBuildFile; fileRef = 1172C9861AF435DA009467AC /* libssh2.h */; };
-		1172C98F1AF43634009467AC /* libssh2_config.h in Copy libssh2 Headers */ = {isa = PBXBuildFile; fileRef = 1172C9871AF435DA009467AC /* libssh2_config.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,10 +34,6 @@
 			dstPath = Headers/libssh2;
 			dstSubfolderSpec = 1;
 			files = (
-				1172C98C1AF43634009467AC /* libssh2_publickey.h in Copy libssh2 Headers */,
-				1172C98D1AF43634009467AC /* libssh2_sftp.h in Copy libssh2 Headers */,
-				1172C98E1AF43634009467AC /* libssh2.h in Copy libssh2 Headers */,
-				1172C98F1AF43634009467AC /* libssh2_config.h in Copy libssh2 Headers */,
 			);
 			name = "Copy libssh2 Headers";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,10 +54,6 @@
 		1172C9631AF33681009467AC /* SwiftGit2.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = SwiftGit2.modulemap; sourceTree = "<group>"; };
 		1172C9691AF3379C009467AC /* liblibssh2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibssh2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1172C9811AF42668009467AC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		1172C9841AF435DA009467AC /* libssh2_publickey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_publickey.h; sourceTree = "<group>"; };
-		1172C9851AF435DA009467AC /* libssh2_sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_sftp.h; sourceTree = "<group>"; };
-		1172C9861AF435DA009467AC /* libssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2.h; sourceTree = "<group>"; };
-		1172C9871AF435DA009467AC /* libssh2_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libssh2_config.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +85,6 @@
 				1172C90E1AF2EDAA009467AC /* SwiftSSH2 */,
 				1172C91B1AF2EDAA009467AC /* SwiftSSH2Tests */,
 				1172C9601AF335A7009467AC /* Libraries */,
-				1172C93A1AF32A14009467AC /* libssh2 */,
 				1172C90D1AF2EDAA009467AC /* Products */,
 			);
 			indentWidth = 2;
@@ -154,18 +137,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1172C93A1AF32A14009467AC /* libssh2 */ = {
-			isa = PBXGroup;
-			children = (
-				1172C9841AF435DA009467AC /* libssh2_publickey.h */,
-				1172C9851AF435DA009467AC /* libssh2_sftp.h */,
-				1172C9861AF435DA009467AC /* libssh2.h */,
-				1172C9871AF435DA009467AC /* libssh2_config.h */,
-			);
-			name = libssh2;
-			path = External/libssh2/include;
-			sourceTree = "<group>";
-		};
 		1172C9601AF335A7009467AC /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,11 +155,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1172C9891AF435DA009467AC /* libssh2_sftp.h in Headers */,
 				1172C9121AF2EDAA009467AC /* SwiftSSH2.h in Headers */,
-				1172C98A1AF435DA009467AC /* libssh2.h in Headers */,
-				1172C98B1AF435DA009467AC /* libssh2_config.h in Headers */,
-				1172C9881AF435DA009467AC /* libssh2_publickey.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,6 +560,7 @@
 				1172C97C1AF3379C009467AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
