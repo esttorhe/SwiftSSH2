@@ -54,6 +54,7 @@
 		1172C9631AF33681009467AC /* SwiftGit2.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = SwiftGit2.modulemap; sourceTree = "<group>"; };
 		1172C9691AF3379C009467AC /* liblibssh2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibssh2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1172C9811AF42668009467AC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		11CD120B1AF47BF900A93EF4 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; name = include; path = "External/libssh2-for-iOS/include"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				1172C90E1AF2EDAA009467AC /* SwiftSSH2 */,
+				11CD120D1AF47C0F00A93EF4 /* libssh2 */,
 				1172C91B1AF2EDAA009467AC /* SwiftSSH2Tests */,
 				1172C9601AF335A7009467AC /* Libraries */,
 				1172C90D1AF2EDAA009467AC /* Products */,
@@ -146,6 +148,14 @@
 				1172C95A1AF32DD5009467AC /* Result.framework */,
 			);
 			name = Libraries;
+			sourceTree = "<group>";
+		};
+		11CD120D1AF47C0F00A93EF4 /* libssh2 */ = {
+			isa = PBXGroup;
+			children = (
+				11CD120B1AF47BF900A93EF4 /* include */,
+			);
+			name = libssh2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,7 +293,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "script/update_libssh2_ios\n";
+			shellScript = "script/makeFatBinary\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

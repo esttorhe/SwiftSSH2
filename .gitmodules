@@ -1,6 +1,0 @@
-[submodule "External/libssh2"]
-	path = External/libssh2
-  url = git@github.com:libssh2/libssh2.git
-[submodule "External/openssl"]
-	path = External/openssl
-	url = git@github.com:openssl/openssl.git

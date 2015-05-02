@@ -20,5 +20,5 @@ import Foundation
 //- (NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length;
 
 public class FileHandle : NSFileHandle {
-  private var handle: LIBSSH2_SFTP_STATVFS LIBSSH2_SFTP_HANDLE
+//  private var handle: LIBSSH2_SFTP_HANDLE
 }
