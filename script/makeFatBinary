@@ -1,0 +1,44 @@
+#!/bin/bash
+set -e
+
+# source the common build functions
+SCRIPT_DIR=$(dirname "$0")
+source "${SCRIPT_DIR}/ios_build_functions.sh"
+
+ARCHS="x86_64 i386 armv7 armv7s arm64"
+
+echo "Building for ${ARCHS}"
+ROOT_PATH="$PWD"
+  for ARCH in ${ARCHS}
+  do
+    if [[ "${ARCH}" == "i386" || "${ARCH}" == "x86_64" ]];
+    then
+      PLATFORM="iPhoneSimulator"
+    else
+      PLATFORM="iPhoneOS"
+    fi
+
+    SDKVERSION=$(ios_sdk_version)
+
+    if [ "${ARCH}" == "arm64" ]
+    then
+      HOST="aarch64-apple-darwin"
+    else
+      HOST="${ARCH}-apple-darwin"
+    fi
+
+    SDKNAME="${PLATFORM}${SDKVERSION}"
+    SDKROOT="$(ios_sdk_path ${SDKNAME})"
+
+    echo "${PLATFORM}${SDKVERSION}-${ARCH}"
+
+    BUILT_LIBS+=("${ROOT_PATH}/External/libssh2-for-iOS/bin/${SDKNAME}-${ARCH}.sdk/lib/libssh2.a")
+  done
+
+  echo "Building fat binary..."
+
+  lipo -create "${BUILT_LIBS[@]}" -output "${ROOT_PATH}/External/libssh2.a"
+  mkdir -p "${ROOT_PATH}/External/libssh2-for-iOS/include/"
+  cp -R "${ROOT_PATH}/External/libssh2-for-iOS/bin/iphonesimulator${SDKVERSION}-i386.sdk/include/libssh2.h" "${ROOT_PATH}/External/libssh2-for-iOS/include/"
+
+  echo "Building done."
