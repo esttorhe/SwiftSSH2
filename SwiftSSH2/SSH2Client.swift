@@ -50,15 +50,15 @@ public class SSH2Client {
   /**
   Initializes an `SSHClient` instance with the parameters provided.
   
-  :param: host The host/server address or name to which we'll be connecting.
+  - parameter host: The host/server address or name to which we'll be connecting.
   
-  :param: port The `host` port to which we'll try to connect.
+  - parameter port: The `host` port to which we'll try to connect.
   
-  :param: username The username we'll use to authenticate with the `host`.
+  - parameter username: The username we'll use to authenticate with the `host`.
   
-  :param: password The password we'll use to authenticate with against the `host` (if any).
+  - parameter password: The password we'll use to authenticate with against the `host` (if any).
   
-  :returns: Returns a fully initialized client ready to start connecting or `nil`
+  - returns: Returns a fully initialized client ready to start connecting or `nil`
   if no valid host address/name was provided.
   */
   public init?(host hostaddr: String, port: Int32 = 22, username: String? = nil, password: String? = nil) {
@@ -69,7 +69,7 @@ public class SSH2Client {
     self.password = password
     
     // Cannot initialize without a host address or name
-    if count(hostaddr) <= 0 {
+    if hostaddr.characters.count <= 0 {
       println("• Cannot initialize without a host address or name")
       
       return nil
@@ -81,11 +81,11 @@ public class SSH2Client {
   /**
   Start interacting with the provided `host`.
   
-  :param: hash A `Fingerprint` hash specifying what type of hash will be used when
+  - parameter hash: A `Fingerprint` hash specifying what type of hash will be used when
   getting the fingerprint back from the server.
   If none provided will default to `.MD5`
   
-  :returns: A `Result` with a tuple of (SSH2Session, Fingerprint) for the current 
+  - returns: A `Result` with a tuple of (SSH2Session, Fingerprint) for the current 
   host if succeeds or `String` describing the current error.
   */
   public func startConnection(hash: Fingerprint.Hash=Fingerprint.Hash.MD5) -> Result<(SSH2Session, Fingerprint), String> {
@@ -103,7 +103,7 @@ public class SSH2Client {
           libssh2_session_set_blocking(oSession.cSession, 10)
           
           // Start the handshake with the server (exchanging banners, MAC layers, etc)
-          do {
+          repeat {
             rc = libssh2_session_handshake(oSession.cSession, sock)
           } while (rc == LIBSSH2_ERROR_EAGAIN)
 
@@ -134,10 +134,10 @@ public class SSH2Client {
   /**
   Retrieves the remove banner from the server (if any).
   
-  :param: session A valid `SSH2Session` that will be used to retrieve the banner.
+  - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
   If `nil` a previously open internal session will be used or an error will be returned.
   
-  :returns: The host's remote banner (if any) or an error if there's no valid/open `SSH2Session`.
+  - returns: The host's remote banner (if any) or an error if there's no valid/open `SSH2Session`.
   */
   public func remoteBanner(session: SSH2Session?=nil) -> Result<String?, String> {
     /**
@@ -189,7 +189,7 @@ public class SSH2Client {
     }
     
     // Reading the authentication methods from the session
-    if let methodsList:String = String(UTF8String: libssh2_userauth_list(rSession.cSession, rUsername, UInt32(count(rUsername)))) {
+    if let methodsList:String = String(UTF8String: libssh2_userauth_list(rSession.cSession, rUsername, UInt32(rUsername.count))) {
       let methods = methodsList.componentsSeparatedByString(",")
       println("• Supported methods for host: \(methodsList)")
       
@@ -236,8 +236,8 @@ public class SSH2Client {
     }
     
     var rc: Int32 = 0
-    do {
-      rc = libssh2_userauth_password_ex(session.cSession, username, UInt32(count(username)), password, UInt32(count(password)), CFunctionPointer<((COpaquePointer, UnsafeMutablePointer<UnsafeMutablePointer<Int8>>, UnsafeMutablePointer<Int32>, UnsafeMutablePointer<UnsafeMutablePointer<Void>>) -> Void)>())
+    repeat {
+      rc = libssh2_userauth_password_ex(session.cSession, username, UInt32(username.count), password, UInt32(password.count), CFunctionPointer<((COpaquePointer, UnsafeMutablePointer<UnsafeMutablePointer<Int8>>, UnsafeMutablePointer<Int32>, UnsafeMutablePointer<UnsafeMutablePointer<Void>>) -> Void)>())
     } while (rc == LIBSSH2_ERROR_EAGAIN)
     
     if rc != 0 {
@@ -248,7 +248,7 @@ public class SSH2Client {
     }
     
     var sftp_session: SFTPSession
-    do {
+    repeat {
       sftp_session = SFTPSession(cSFTPSession:libssh2_sftp_init(session.cSession))
       
       let sftpStatus = libssh2_session_last_errno(session.cSession)
@@ -274,7 +274,7 @@ public class SSH2Client {
     
     if let flags = str.toInt() {
       var result: Int32 = -1
-      do {
+      repeat {
         result = libssh2_sftp_mkdir_ex(sftp_session.cSFTPSession, path, UInt32(count(path)), flags)
         
         if result == 0 {
@@ -306,7 +306,7 @@ public class SSH2Client {
   /**
   */
   public func removeDirectoryAtPath(path: String, sftp_session: SFTPSession) -> Result<String, String> {
-    if libssh2_sftp_rmdir_ex(sftp_session.cSFTPSession, path, UInt32(count(path))) == 0 {
+    if libssh2_sftp_rmdir_ex(sftp_session.cSFTPSession, path, UInt32(path.count)) == 0 {
       return Result.success("Successfully deleted directory \(path)")
     }
     
@@ -332,8 +332,8 @@ public class SSH2Client {
     /* Request a dir listing via SFTP */
     var rc: Int32 = 0
     var sftp_handle: SFTPFileHandle
-    do {
-      sftp_handle = SFTPFileHandle(fileHandle: libssh2_sftp_open_ex(sftp_session.cSFTPSession, sftppath, UInt32(count(sftppath)), 0, 0, LIBSSH2_SFTP_OPENDIR))
+    repeat {
+      sftp_handle = SFTPFileHandle(fileHandle: libssh2_sftp_open_ex(sftp_session.cSFTPSession, sftppath, UInt32(sftppath.count), 0, 0, LIBSSH2_SFTP_OPENDIR))
       sftp_handle.isDirectory = true
       
       let sftpHandleStatus = libssh2_session_last_errno(session.cSession) != LIBSSH2_ERROR_EAGAIN
@@ -347,14 +347,14 @@ public class SSH2Client {
     
     /* loop until we can't read any more data to the buffer */
     var result = [File]()
-    do {
+    repeat {
       // Local variables declaration
       let buffSize = 512
       let attrs = UnsafeMutablePointer<LIBSSH2_SFTP_ATTRIBUTES>.alloc(1)
       let buffer = UnsafeMutablePointer<Int8>.alloc(buffSize)
       let longe = UnsafeMutablePointer<Int8>.alloc(buffSize)
       
-      do {
+      repeat {
         rc = libssh2_sftp_readdir_ex(sftp_handle.cFileHandle, buffer, buffSize, longe, buffSize, attrs)
       } while (rc == LIBSSH2_ERROR_EAGAIN)
       
@@ -387,7 +387,7 @@ public class SSH2Client {
     return Result.failure("Unable to list items at '\(sftppath)'")
   }
   
-  public func currentDirectoryPath(#sftp_session: SFTPSession) -> Result<String, String> {
+  public func currentDirectoryPath(sftp_session sftp_session: SFTPSession) -> Result<String, String> {
     return self.resolveSymlink(sftp_session, path: ".", complex: true)
   }
   
@@ -451,7 +451,7 @@ public class SSH2Client {
   
   /**
   */
-  internal func connectToSocketUsing(#addrInfo: addrinfo) -> Result<libssh2_socket_t, String> {
+  internal func connectToSocketUsing(addrInfo addrInfo: addrinfo) -> Result<libssh2_socket_t, String> {
     // loop through all the results and connect to the first we can
     var p:addrinfo = addrInfo
     var sock: libssh2_socket_t = -1
@@ -505,13 +505,13 @@ public class SSH2Client {
     let buffer: UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>.alloc(1)
     var pathLength: Int32 = 0
     var bufferLength: UInt32 = 256
-    do {
-      pathLength = libssh2_sftp_symlink_ex(sftp_session.cSFTPSession, path, UInt32(count(path)), buffer, bufferLength, complex ? LIBSSH2_SFTP_REALPATH : LIBSSH2_SFTP_READLINK)
+    repeat {
+      pathLength = libssh2_sftp_symlink_ex(sftp_session.cSFTPSession, path, UInt32(path.count), buffer, bufferLength, complex ? LIBSSH2_SFTP_REALPATH : LIBSSH2_SFTP_READLINK)
       bufferLength *= 2 // grow exponentially so don't get bogged down too long
     } while(pathLength == LIBSSH2_ERROR_BUFFER_TOO_SMALL)
     
     if pathLength >= 0 {
-      if let pathName = String(UTF8String: buffer) {
+      if let pathName = String(buffer) {
         println("• Current Path: \(pathName)")
         buffer.dealloc(1)
         

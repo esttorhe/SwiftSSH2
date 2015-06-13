@@ -1,2 +1,2 @@
-github "antitypical/Result"
-github "Quick/Quick"
+github "Quick/Quick" >= 0.4.0
+github "Quick/Nimble" == 2.0.0

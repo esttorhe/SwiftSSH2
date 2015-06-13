@@ -46,7 +46,7 @@ public class SSHChannel {
     libssh2_session_set_blocking(session.cSession, 10)
     
     let windowSize: UInt32 = 256*1024
-    let cChannel = libssh2_channel_open_ex(session.cSession, "session", UInt32(count("session") - 1), windowSize, UInt32(LIBSSH2_CHANNEL_PACKET_DEFAULT), UnsafePointer<Int8>(), UInt32(0))
+    let cChannel = libssh2_channel_open_ex(session.cSession, "session", UInt32("session".characters.count - 1), windowSize, UInt32(LIBSSH2_CHANNEL_PACKET_DEFAULT), UnsafePointer<Int8>(), UInt32(0))
     self.channel = SSH2Channel(channel: cChannel)
     
     if cChannel.hashValue == 0 {

@@ -71,7 +71,7 @@ public enum Fingerprint: Equatable {
   /// Converts the provided `fingerprint` to a valid `String` based on the `length`.
   /// Inserts `:` every 2 «characters» to match a fingerprint mask.
   ///
-  /// :returns: A `String` representation of `fingerprint` according to the provided `hash`
+  /// - returns: A `String` representation of `fingerprint` according to the provided `hash`
   internal func fingerprintString(fingerprint: UnsafePointer<Int8>, length: Int) -> String {
     let buf = UnsafePointer<UInt8>(fingerprint)
     func itoh(i: UInt8) -> UInt8 {

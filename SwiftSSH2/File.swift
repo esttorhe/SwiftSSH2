@@ -24,13 +24,13 @@ public struct File {
   Initializes a `File` instance with the provided parameters.
   Returns `nil` if fails to read the file name or any of its attributes.
   
-  :param: buffer The «C buffer» containing the file name returned from `libssh2`.
+  - parameter buffer: The «C buffer» containing the file name returned from `libssh2`.
   
-  :param: fileAttributes `LIBSSH2_SFTP_ATTRIBUTES` with the file attributes (flags).
+  - parameter fileAttributes: `LIBSSH2_SFTP_ATTRIBUTES` with the file attributes (flags).
   
-  :param: longentry «C string» returned from `libssh2` «describing» the file.
+  - parameter longentry: «C string» returned from `libssh2` «describing» the file.
   
-  :returns: A fully initialized `File` or `nil` if some value couldn't be retrieved.
+  - returns: A fully initialized `File` or `nil` if some value couldn't be retrieved.
   */
   public init?(buffer: UnsafeMutablePointer<Int8>, fileAttributes attrs: LIBSSH2_SFTP_ATTRIBUTES, longentry: UnsafeMutablePointer<Int8>?=nil) {
     // Initialize variables

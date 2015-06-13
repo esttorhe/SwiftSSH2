@@ -19,13 +19,12 @@
 		1118FB281AF69747003B46C6 /* libssh2_publickey.h in Headers */ = {isa = PBXBuildFile; fileRef = 1118FB241AF69747003B46C6 /* libssh2_publickey.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1118FB291AF69747003B46C6 /* libssh2_sftp.h in Headers */ = {isa = PBXBuildFile; fileRef = 1118FB251AF69747003B46C6 /* libssh2_sftp.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1118FB2A1AF69747003B46C6 /* libssh2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1118FB261AF69747003B46C6 /* libssh2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		11474F761B2CD13C00F750C4 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11474F751B2CD13C00F750C4 /* Quick.framework */; };
 		114F3C981B269B260085A810 /* SSH2Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F3C971B269B260085A810 /* SSH2Channel.swift */; };
 		114F3C9A1B269BAC0085A810 /* SSHChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F3C991B269BAC0085A810 /* SSHChannel.swift */; };
 		1172C9121AF2EDAA009467AC /* SwiftSSH2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1172C9111AF2EDAA009467AC /* SwiftSSH2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1172C9181AF2EDAA009467AC /* SwiftSSH2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C90C1AF2EDAA009467AC /* SwiftSSH2.framework */; };
-		1172C95B1AF32DD5009467AC /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C95A1AF32DD5009467AC /* Result.framework */; };
 		1172C95E1AF32DF2009467AC /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C95C1AF32DF2009467AC /* Nimble.framework */; };
-		1172C95F1AF32DF2009467AC /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C95D1AF32DF2009467AC /* Quick.framework */; };
 		1172C9621AF335DF009467AC /* FileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1172C9611AF335DF009467AC /* FileHandle.swift */; };
 		11A259BA1B25F6CF002011A1 /* Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A259B91B25F6CF002011A1 /* Fingerprint.swift */; };
 		11B3580C1B1CF74A00D9A950 /* SFTPSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B3580B1B1CF74A00D9A950 /* SFTPSession.swift */; };
@@ -77,6 +76,7 @@
 		1118FB241AF69747003B46C6 /* libssh2_publickey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libssh2_publickey.h; path = include/libssh2/libssh2_publickey.h; sourceTree = SOURCE_ROOT; };
 		1118FB251AF69747003B46C6 /* libssh2_sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libssh2_sftp.h; path = include/libssh2/libssh2_sftp.h; sourceTree = SOURCE_ROOT; };
 		1118FB261AF69747003B46C6 /* libssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libssh2.h; path = include/libssh2/libssh2.h; sourceTree = SOURCE_ROOT; };
+		11474F751B2CD13C00F750C4 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = "Carthage/Checkouts/Quick/build/Debug-iphoneos/Quick.framework"; sourceTree = "<group>"; };
 		114F3C971B269B260085A810 /* SSH2Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSH2Channel.swift; sourceTree = "<group>"; };
 		114F3C991B269BAC0085A810 /* SSHChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSHChannel.swift; sourceTree = "<group>"; };
 		1172C90C1AF2EDAA009467AC /* SwiftSSH2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSSH2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,9 +84,7 @@
 		1172C9111AF2EDAA009467AC /* SwiftSSH2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSSH2.h; sourceTree = "<group>"; };
 		1172C9171AF2EDAA009467AC /* SwiftSSH2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSSH2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1172C91D1AF2EDAA009467AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1172C95A1AF32DD5009467AC /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "Carthage/Checkouts/Result/build/Debug-iphoneos/Result.framework"; sourceTree = "<group>"; };
 		1172C95C1AF32DF2009467AC /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = "Carthage/Checkouts/Quick/Externals/Nimble/build/Debug-iphoneos/Nimble.framework"; sourceTree = "<group>"; };
-		1172C95D1AF32DF2009467AC /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = "Carthage/Checkouts/Quick/build/Debug-iphoneos/Quick.framework"; sourceTree = "<group>"; };
 		1172C9611AF335DF009467AC /* FileHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHandle.swift; sourceTree = "<group>"; };
 		1172C9631AF33681009467AC /* SwiftGit2.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = SwiftGit2.modulemap; sourceTree = "<group>"; };
 		1172C9811AF42668009467AC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -109,7 +107,6 @@
 			files = (
 				1118FB171AF5C09D003B46C6 /* libz.dylib in Frameworks */,
 				1118F9B51AF5BDE7003B46C6 /* openssl.framework in Frameworks */,
-				1172C95B1AF32DD5009467AC /* Result.framework in Frameworks */,
 				1118F9B41AF5BDE7003B46C6 /* gcrypt.framework in Frameworks */,
 				1118F9B71AF5BE03003B46C6 /* libssh2.a in Frameworks */,
 			);
@@ -119,8 +116,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11474F761B2CD13C00F750C4 /* Quick.framework in Frameworks */,
 				1172C95E1AF32DF2009467AC /* Nimble.framework in Frameworks */,
-				1172C95F1AF32DF2009467AC /* Quick.framework in Frameworks */,
 				1172C9181AF2EDAA009467AC /* SwiftSSH2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,9 +224,8 @@
 				1118F9B21AF5BDE7003B46C6 /* gcrypt.framework */,
 				1118F9B31AF5BDE7003B46C6 /* openssl.framework */,
 				1172C9811AF42668009467AC /* libz.dylib */,
+				11474F751B2CD13C00F750C4 /* Quick.framework */,
 				1172C95C1AF32DF2009467AC /* Nimble.framework */,
-				1172C95D1AF32DF2009467AC /* Quick.framework */,
-				1172C95A1AF32DD5009467AC /* Result.framework */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -297,7 +293,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Esteban Torres";
 				TargetAttributes = {
 					1172C90B1AF2EDAA009467AC = {
@@ -404,6 +400,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -514,6 +511,7 @@
 					"-lssl",
 				);
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = "es.estebantorr.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -551,6 +549,7 @@
 					"-lssl",
 				);
 				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "es.estebantorr.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -576,6 +575,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs/build/Debug-iphoneos",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "es.estebantorr.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -596,6 +596,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs/build/Debug-iphoneos",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "es.estebantorr.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
