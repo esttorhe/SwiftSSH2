@@ -19,5 +19,3 @@ FOUNDATION_EXPORT const unsigned char SwiftSSH2VersionString[];
 #import "libssh2_config.h"
 #import "libssh2_publickey.h"
 #import "libssh2_sftp.h"
-
-#import "Result/Result.h"
