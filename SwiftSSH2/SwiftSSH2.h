@@ -15,5 +15,9 @@ FOUNDATION_EXPORT double SwiftSSH2VersionNumber;
 FOUNDATION_EXPORT const unsigned char SwiftSSH2VersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <SwiftSSH2/PublicHeader.h>
-#import "libssh2/libssh2.h"
-#import "libssh2/libssh2_sftp.h"
+#import "libssh2.h"
+#import "libssh2_config.h"
+#import "libssh2_publickey.h"
+#import "libssh2_sftp.h"
+
+#import "Result/Result.h"

@@ -1,22 +1,20 @@
 //  Copyright (c) 2015 Rob Rix. All rights reserved.
 
-import Box
-
 /// An enum representing either a failure with an explanatory error, or a success with a result value.
-public enum Result<T, Error>: Printable, DebugPrintable {
-	case Success(Box<T>)
-	case Failure(Box<Error>)
+public enum Result<T, Error>: CustomStringConvertible, CustomDebugStringConvertible {
+	case Success(T)
+	case Failure(Error)
 
 	// MARK: Constructors
 
 	/// Constructs a success wrapping a `value`.
 	public init(value: T) {
-		self = .Success(Box(value))
+		self = .Success(value)
 	}
 
 	/// Constructs a failure wrapping an `error`.
 	public init(error: Error) {
-		self = .Failure(Box(error))
+		self = .Failure(error)
 	}
 
 	/// Constructs a result from an Optional, failing with `Error` if `nil`
@@ -50,12 +48,12 @@ public enum Result<T, Error>: Printable, DebugPrintable {
 	/// Case analysis for Result.
 	///
 	/// Returns the value produced by applying `ifFailure` to `Failure` Results, or `ifSuccess` to `Success` Results.
-	public func analysis<Result>(@noescape #ifSuccess: T -> Result, @noescape ifFailure: Error -> Result) -> Result {
+	public func analysis<Result>(@noescape ifSuccess ifSuccess: T -> Result, @noescape ifFailure: Error -> Result) -> Result {
 		switch self {
 		case let .Success(value):
-			return ifSuccess(value.value)
+			return ifSuccess(value)
 		case let .Failure(value):
-			return ifFailure(value.value)
+			return ifFailure(value)
 		}
 	}
 
@@ -72,6 +70,18 @@ public enum Result<T, Error>: Printable, DebugPrintable {
 		return analysis(
 			ifSuccess: transform,
 			ifFailure: Result<U, Error>.failure)
+	}
+	
+	/// Returns `self.value` if this result is a .Success, or the given value otherwise. Equivalent with `??`
+	public func recover(@autoclosure value: () -> T) -> T {
+		return self.value ?? value()
+	}
+	
+	/// Returns this result if it is a .Success, or the given result otherwise. Equivalent with `??`
+	public func recoverWith(@autoclosure result: () -> Result<T,Error>) -> Result<T,Error> {
+		return analysis(
+			ifSuccess: { _ in self },
+			ifFailure: { _ in result() })
 	}
 
 
@@ -90,16 +100,22 @@ public enum Result<T, Error>: Printable, DebugPrintable {
 	public static var lineKey: String { return "\(errorDomain).line" }
 
 	/// Constructs an error.
-	public static func error(function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__) -> NSError {
-		return NSError(domain: "com.antitypical.Result", code: 0, userInfo: [
+	public static func error(message: String? = nil, function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__) -> NSError {
+		var userInfo: [String: AnyObject] = [
 			functionKey: function,
 			fileKey: file,
 			lineKey: line,
-		])
+		]
+
+		if let message = message {
+			userInfo[NSLocalizedDescriptionKey] = message
+		}
+
+		return NSError(domain: errorDomain, code: 0, userInfo: userInfo)
 	}
 
 
-	// MARK: Printable
+	// MARK: CustomStringConvertible
 
 	public var description: String {
 		return analysis(
@@ -108,7 +124,7 @@ public enum Result<T, Error>: Printable, DebugPrintable {
 	}
 
 
-	// MARK: DebugPrintable
+	// MARK: CustomDebugStringConvertible
 
 	public var debugDescription: String {
 		return description
@@ -134,14 +150,12 @@ public func != <T: Equatable, Error: Equatable> (left: Result<T, Error>, right: 
 
 /// Returns the value of `left` if it is a `Success`, or `right` otherwise. Short-circuits.
 public func ?? <T, Error> (left: Result<T, Error>, @autoclosure right: () -> T) -> T {
-	return left.value ?? right()
+	return left.recover(right())
 }
 
 /// Returns `left` if it is a `Success`es, or `right` otherwise. Short-circuits.
 public func ?? <T, Error> (left: Result<T, Error>, @autoclosure right: () -> Result<T, Error>) -> Result<T, Error> {
-	return left.analysis(
-		ifSuccess: { _ in left  },
-		ifFailure: { _ in right() })
+	return left.recoverWith(right())
 }
 
 
@@ -152,9 +166,9 @@ public func ?? <T, Error> (left: Result<T, Error>, @autoclosure right: () -> Res
 /// This is convenient for wrapping Cocoa API which returns an object or `nil` + an error, by reference. e.g.:
 ///
 ///     Result.try { NSData(contentsOfURL: URL, options: .DataReadingMapped, error: $0) }
-public func try<T>(function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__, try: NSErrorPointer -> T?) -> Result<T, NSError> {
+public func `try`<T>(function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__, `try`: NSErrorPointer -> T?) -> Result<T, NSError> {
 	var error: NSError?
-	return try(&error).map(Result.success) ?? Result.failure(error ?? Result<T, NSError>.error(function: function, file: file, line: line))
+	return `try`(&error).map(Result.success) ?? Result.failure(error ?? Result<T, NSError>.error(function: function, file: file, line: line))
 }
 
 /// Constructs a Result with the result of calling `try` with an error pointer.
@@ -162,9 +176,9 @@ public func try<T>(function: String = __FUNCTION__, file: String = __FILE__, lin
 /// This is convenient for wrapping Cocoa API which returns a `Bool` + an error, by reference. e.g.:
 ///
 ///     Result.try { NSFileManager.defaultManager().removeItemAtURL(URL, error: $0) }
-public func try(function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__, try: NSErrorPointer -> Bool) -> Result<(), NSError> {
+public func `try`(function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__, `try`: NSErrorPointer -> Bool) -> Result<(), NSError> {
 	var error: NSError?
-	return try(&error) ?
+	return `try`(&error) ?
 		.success(())
 	:	.failure(error ?? Result<(), NSError>.error(function: function, file: file, line: line))
 }
@@ -177,9 +191,16 @@ infix operator >>- {
 	associativity left
 
 	// Higher precedence than function application, but lower than function composition.
-	precedence 150
+	precedence 100
 }
 
+infix operator &&& {
+	/// Same associativity as &&.
+	associativity left
+
+	/// Same precedence as &&.
+	precedence 120
+}
 
 /// Returns the result of applying `transform` to `Success`es’ values, or re-wrapping `Failure`’s errors.
 ///
@@ -188,7 +209,10 @@ public func >>- <T, U, Error> (result: Result<T, Error>, @noescape transform: T 
 	return result.flatMap(transform)
 }
 
+/// Returns a Result with a tuple of `left` and `right` values if both are `Success`es, or re-wrapping the error of the earlier `Failure`.
+public func &&& <T, U, Error> (left: Result<T, Error>, @autoclosure right: () -> Result<U, Error>) -> Result<(T, U), Error> {
+	return left.flatMap { left in right().map { right in (left, right) } }
+}
 
-// MARK: - Imports
 
 import Foundation

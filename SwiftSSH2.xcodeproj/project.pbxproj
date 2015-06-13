@@ -7,14 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1118F99F1AF5A2C4003B46C6 /* SSH2Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118F99E1AF5A2C4003B46C6 /* SSH2Client.swift */; };
+		1118F9B41AF5BDE7003B46C6 /* gcrypt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1118F9B21AF5BDE7003B46C6 /* gcrypt.framework */; };
+		1118F9B51AF5BDE7003B46C6 /* openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1118F9B31AF5BDE7003B46C6 /* openssl.framework */; };
+		1118F9B71AF5BE03003B46C6 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1118F9B61AF5BE03003B46C6 /* libssh2.a */; };
+		1118FB171AF5C09D003B46C6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C9811AF42668009467AC /* libz.dylib */; };
+		1118FB1B1AF5E4B5003B46C6 /* FileHandleSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118FB1A1AF5E4B5003B46C6 /* FileHandleSpec.swift */; };
+		1118FB1D1AF5E8E1003B46C6 /* SFTPFileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118FB1C1AF5E8E1003B46C6 /* SFTPFileHandle.swift */; };
+		1118FB1F1AF5E9BA003B46C6 /* SSH2Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1118FB1E1AF5E9BA003B46C6 /* SSH2Session.swift */; };
+		1118FB271AF69747003B46C6 /* libssh2_config.h in Headers */ = {isa = PBXBuildFile; fileRef = 1118FB231AF69747003B46C6 /* libssh2_config.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1118FB281AF69747003B46C6 /* libssh2_publickey.h in Headers */ = {isa = PBXBuildFile; fileRef = 1118FB241AF69747003B46C6 /* libssh2_publickey.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1118FB291AF69747003B46C6 /* libssh2_sftp.h in Headers */ = {isa = PBXBuildFile; fileRef = 1118FB251AF69747003B46C6 /* libssh2_sftp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1118FB2A1AF69747003B46C6 /* libssh2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1118FB261AF69747003B46C6 /* libssh2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		114F3C981B269B260085A810 /* SSH2Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F3C971B269B260085A810 /* SSH2Channel.swift */; };
+		114F3C9A1B269BAC0085A810 /* SSHChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114F3C991B269BAC0085A810 /* SSHChannel.swift */; };
 		1172C9121AF2EDAA009467AC /* SwiftSSH2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1172C9111AF2EDAA009467AC /* SwiftSSH2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1172C9181AF2EDAA009467AC /* SwiftSSH2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C90C1AF2EDAA009467AC /* SwiftSSH2.framework */; };
-		1172C91F1AF2EDAA009467AC /* SwiftSSH2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1172C91E1AF2EDAA009467AC /* SwiftSSH2Tests.swift */; };
 		1172C95B1AF32DD5009467AC /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C95A1AF32DD5009467AC /* Result.framework */; };
 		1172C95E1AF32DF2009467AC /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C95C1AF32DF2009467AC /* Nimble.framework */; };
 		1172C95F1AF32DF2009467AC /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C95D1AF32DF2009467AC /* Quick.framework */; };
 		1172C9621AF335DF009467AC /* FileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1172C9611AF335DF009467AC /* FileHandle.swift */; };
-		1172C9821AF42668009467AC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C9811AF42668009467AC /* libz.dylib */; };
+		11A259BA1B25F6CF002011A1 /* Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A259B91B25F6CF002011A1 /* Fingerprint.swift */; };
+		11B3580C1B1CF74A00D9A950 /* SFTPSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B3580B1B1CF74A00D9A950 /* SFTPSession.swift */; };
+		11B3580E1B1D016B00D9A950 /* SockAddressTypeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B3580D1B1D016B00D9A950 /* SockAddressTypeProtocol.swift */; };
+		11B358121B1F78B200D9A950 /* ConditionalLogging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B358111B1F78B200D9A950 /* ConditionalLogging.swift */; };
+		11ECD28C1B223D8000E84865 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ECD28B1B223D8000E84865 /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,33 +45,61 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1172C9411AF32A7B009467AC /* Copy libssh2 Headers */ = {
+		1118FB121AF5BFAF003B46C6 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Headers/libssh2;
 			dstSubfolderSpec = 1;
 			files = (
 			);
-			name = "Copy libssh2 Headers";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11ECD2931B23D4BE00E84865 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1118F99E1AF5A2C4003B46C6 /* SSH2Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSH2Client.swift; sourceTree = "<group>"; };
+		1118F9B21AF5BDE7003B46C6 /* gcrypt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = gcrypt.framework; sourceTree = "<group>"; };
+		1118F9B31AF5BDE7003B46C6 /* openssl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = openssl.framework; sourceTree = "<group>"; };
+		1118F9B61AF5BE03003B46C6 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = lib/libssh2.a; sourceTree = "<group>"; };
+		1118FB1A1AF5E4B5003B46C6 /* FileHandleSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHandleSpec.swift; sourceTree = "<group>"; };
+		1118FB1C1AF5E8E1003B46C6 /* SFTPFileHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFTPFileHandle.swift; sourceTree = "<group>"; };
+		1118FB1E1AF5E9BA003B46C6 /* SSH2Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSH2Session.swift; sourceTree = "<group>"; };
+		1118FB231AF69747003B46C6 /* libssh2_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libssh2_config.h; path = include/libssh2/libssh2_config.h; sourceTree = SOURCE_ROOT; };
+		1118FB241AF69747003B46C6 /* libssh2_publickey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libssh2_publickey.h; path = include/libssh2/libssh2_publickey.h; sourceTree = SOURCE_ROOT; };
+		1118FB251AF69747003B46C6 /* libssh2_sftp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libssh2_sftp.h; path = include/libssh2/libssh2_sftp.h; sourceTree = SOURCE_ROOT; };
+		1118FB261AF69747003B46C6 /* libssh2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libssh2.h; path = include/libssh2/libssh2.h; sourceTree = SOURCE_ROOT; };
+		114F3C971B269B260085A810 /* SSH2Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSH2Channel.swift; sourceTree = "<group>"; };
+		114F3C991B269BAC0085A810 /* SSHChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSHChannel.swift; sourceTree = "<group>"; };
 		1172C90C1AF2EDAA009467AC /* SwiftSSH2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSSH2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1172C9101AF2EDAA009467AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1172C9111AF2EDAA009467AC /* SwiftSSH2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSSH2.h; sourceTree = "<group>"; };
 		1172C9171AF2EDAA009467AC /* SwiftSSH2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSSH2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1172C91D1AF2EDAA009467AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1172C91E1AF2EDAA009467AC /* SwiftSSH2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSSH2Tests.swift; sourceTree = "<group>"; };
 		1172C95A1AF32DD5009467AC /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "Carthage/Checkouts/Result/build/Debug-iphoneos/Result.framework"; sourceTree = "<group>"; };
 		1172C95C1AF32DF2009467AC /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = "Carthage/Checkouts/Quick/Externals/Nimble/build/Debug-iphoneos/Nimble.framework"; sourceTree = "<group>"; };
 		1172C95D1AF32DF2009467AC /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = "Carthage/Checkouts/Quick/build/Debug-iphoneos/Quick.framework"; sourceTree = "<group>"; };
 		1172C9611AF335DF009467AC /* FileHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHandle.swift; sourceTree = "<group>"; };
 		1172C9631AF33681009467AC /* SwiftGit2.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = SwiftGit2.modulemap; sourceTree = "<group>"; };
-		1172C9691AF3379C009467AC /* liblibssh2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibssh2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1172C9811AF42668009467AC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		11CD120B1AF47BF900A93EF4 /* include */ = {isa = PBXFileReference; lastKnownFileType = folder; name = include; path = "External/libssh2-for-iOS/include"; sourceTree = "<group>"; };
+		11A259B81B252FE3002011A1 /* SwiftSSH2.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftSSH2.playground; sourceTree = "<group>"; };
+		11A259B91B25F6CF002011A1 /* Fingerprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fingerprint.swift; sourceTree = "<group>"; };
+		11B3580B1B1CF74A00D9A950 /* SFTPSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFTPSession.swift; sourceTree = "<group>"; };
+		11B3580D1B1D016B00D9A950 /* SockAddressTypeProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SockAddressTypeProtocol.swift; sourceTree = "<group>"; };
+		11B358111B1F78B200D9A950 /* ConditionalLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionalLogging.swift; sourceTree = "<group>"; };
+		11CD123F1AF599A000A93EF4 /* CK2SFTPSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CK2SFTPSession.m; path = "../../../ThirdParty/libssh2_sftp-Cocoa-wrapper/CK2SFTPSession.m"; sourceTree = "<group>"; };
+		11CD12401AF599B600A93EF4 /* CK2SFTPSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CK2SFTPSession.h; path = "../../../ThirdParty/libssh2_sftp-Cocoa-wrapper/CK2SFTPSession.h"; sourceTree = "<group>"; };
+		11CD12411AF599F400A93EF4 /* CK2SFTPFileHandle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CK2SFTPFileHandle.h; path = "../../../ThirdParty/libssh2_sftp-Cocoa-wrapper/CK2SFTPFileHandle.h"; sourceTree = "<group>"; };
+		11CD12421AF599F400A93EF4 /* CK2SFTPFileHandle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CK2SFTPFileHandle.m; path = "../../../ThirdParty/libssh2_sftp-Cocoa-wrapper/CK2SFTPFileHandle.m"; sourceTree = "<group>"; };
+		11ECD28B1B223D8000E84865 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,8 +107,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1172C9821AF42668009467AC /* libz.dylib in Frameworks */,
+				1118FB171AF5C09D003B46C6 /* libz.dylib in Frameworks */,
+				1118F9B51AF5BDE7003B46C6 /* openssl.framework in Frameworks */,
 				1172C95B1AF32DD5009467AC /* Result.framework in Frameworks */,
+				1118F9B41AF5BDE7003B46C6 /* gcrypt.framework in Frameworks */,
+				1118F9B71AF5BE03003B46C6 /* libssh2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,13 +128,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1118FB071AF5BF9C003B46C6 /* libssh2 */ = {
+			isa = PBXGroup;
+			children = (
+				1118FB231AF69747003B46C6 /* libssh2_config.h */,
+				1118FB241AF69747003B46C6 /* libssh2_publickey.h */,
+				1118FB251AF69747003B46C6 /* libssh2_sftp.h */,
+				1118FB261AF69747003B46C6 /* libssh2.h */,
+			);
+			path = libssh2;
+			sourceTree = "<group>";
+		};
+		1118FB221AF696CF003B46C6 /* Pointer Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				1118FB1C1AF5E8E1003B46C6 /* SFTPFileHandle.swift */,
+				11B3580B1B1CF74A00D9A950 /* SFTPSession.swift */,
+				1118FB1E1AF5E9BA003B46C6 /* SSH2Session.swift */,
+				114F3C971B269B260085A810 /* SSH2Channel.swift */,
+			);
+			path = "Pointer Wrappers";
+			sourceTree = "<group>";
+		};
 		1172C9021AF2EDAA009467AC = {
 			isa = PBXGroup;
 			children = (
 				1172C90E1AF2EDAA009467AC /* SwiftSSH2 */,
-				11CD120D1AF47C0F00A93EF4 /* libssh2 */,
 				1172C91B1AF2EDAA009467AC /* SwiftSSH2Tests */,
 				1172C9601AF335A7009467AC /* Libraries */,
+				1118FB071AF5BF9C003B46C6 /* libssh2 */,
 				1172C90D1AF2EDAA009467AC /* Products */,
 			);
 			indentWidth = 2;
@@ -98,7 +168,6 @@
 			children = (
 				1172C90C1AF2EDAA009467AC /* SwiftSSH2.framework */,
 				1172C9171AF2EDAA009467AC /* SwiftSSH2Tests.xctest */,
-				1172C9691AF3379C009467AC /* liblibssh2.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -107,8 +176,19 @@
 			isa = PBXGroup;
 			children = (
 				1172C9111AF2EDAA009467AC /* SwiftSSH2.h */,
-				1172C9611AF335DF009467AC /* FileHandle.swift */,
+				1118FB221AF696CF003B46C6 /* Pointer Wrappers */,
 				1172C90F1AF2EDAA009467AC /* Supporting Files */,
+				11CD12411AF599F400A93EF4 /* CK2SFTPFileHandle.h */,
+				11CD12421AF599F400A93EF4 /* CK2SFTPFileHandle.m */,
+				11CD12401AF599B600A93EF4 /* CK2SFTPSession.h */,
+				11CD123F1AF599A000A93EF4 /* CK2SFTPSession.m */,
+				11B358111B1F78B200D9A950 /* ConditionalLogging.swift */,
+				11ECD28B1B223D8000E84865 /* File.swift */,
+				1172C9611AF335DF009467AC /* FileHandle.swift */,
+				11A259B91B25F6CF002011A1 /* Fingerprint.swift */,
+				11B3580D1B1D016B00D9A950 /* SockAddressTypeProtocol.swift */,
+				1118F99E1AF5A2C4003B46C6 /* SSH2Client.swift */,
+				114F3C991B269BAC0085A810 /* SSHChannel.swift */,
 			);
 			path = SwiftSSH2;
 			sourceTree = "<group>";
@@ -119,13 +199,13 @@
 				1172C9101AF2EDAA009467AC /* Info.plist */,
 				1172C9631AF33681009467AC /* SwiftGit2.modulemap */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		1172C91B1AF2EDAA009467AC /* SwiftSSH2Tests */ = {
 			isa = PBXGroup;
 			children = (
-				1172C91E1AF2EDAA009467AC /* SwiftSSH2Tests.swift */,
+				1118FB1A1AF5E4B5003B46C6 /* FileHandleSpec.swift */,
 				1172C91C1AF2EDAA009467AC /* Supporting Files */,
 			);
 			path = SwiftSSH2Tests;
@@ -135,27 +215,23 @@
 			isa = PBXGroup;
 			children = (
 				1172C91D1AF2EDAA009467AC /* Info.plist */,
+				11A259B81B252FE3002011A1 /* SwiftSSH2.playground */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		1172C9601AF335A7009467AC /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				1118F9B61AF5BE03003B46C6 /* libssh2.a */,
+				1118F9B21AF5BDE7003B46C6 /* gcrypt.framework */,
+				1118F9B31AF5BDE7003B46C6 /* openssl.framework */,
 				1172C9811AF42668009467AC /* libz.dylib */,
 				1172C95C1AF32DF2009467AC /* Nimble.framework */,
 				1172C95D1AF32DF2009467AC /* Quick.framework */,
 				1172C95A1AF32DD5009467AC /* Result.framework */,
 			);
 			name = Libraries;
-			sourceTree = "<group>";
-		};
-		11CD120D1AF47C0F00A93EF4 /* libssh2 */ = {
-			isa = PBXGroup;
-			children = (
-				11CD120B1AF47BF900A93EF4 /* include */,
-			);
-			name = libssh2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +242,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1172C9121AF2EDAA009467AC /* SwiftSSH2.h in Headers */,
+				1118FB2A1AF69747003B46C6 /* libssh2.h in Headers */,
+				1118FB281AF69747003B46C6 /* libssh2_publickey.h in Headers */,
+				1118FB271AF69747003B46C6 /* libssh2_config.h in Headers */,
+				1118FB291AF69747003B46C6 /* libssh2_sftp.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,7 +256,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1172C9221AF2EDAA009467AC /* Build configuration list for PBXNativeTarget "SwiftSSH2" */;
 			buildPhases = (
-				1172C9411AF32A7B009467AC /* Copy libssh2 Headers */,
+				1118FB121AF5BFAF003B46C6 /* CopyFiles */,
 				1172C9071AF2EDAA009467AC /* Sources */,
 				1172C9081AF2EDAA009467AC /* Frameworks */,
 				1172C9091AF2EDAA009467AC /* Headers */,
@@ -198,6 +278,7 @@
 				1172C9131AF2EDAA009467AC /* Sources */,
 				1172C9141AF2EDAA009467AC /* Frameworks */,
 				1172C9151AF2EDAA009467AC /* Resources */,
+				11ECD2931B23D4BE00E84865 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -209,27 +290,13 @@
 			productReference = 1172C9171AF2EDAA009467AC /* SwiftSSH2Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		1172C9681AF3379C009467AC /* libssh2 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1172C97A1AF3379C009467AC /* Build configuration list for PBXNativeTarget "libssh2" */;
-			buildPhases = (
-				1172C9801AF338AB009467AC /* Run Script */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = libssh2;
-			productName = libssh2;
-			productReference = 1172C9691AF3379C009467AC /* liblibssh2.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		1172C9031AF2EDAA009467AC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Esteban Torres";
 				TargetAttributes = {
@@ -237,9 +304,6 @@
 						CreatedOnToolsVersion = 6.3.1;
 					};
 					1172C9161AF2EDAA009467AC = {
-						CreatedOnToolsVersion = 6.3.1;
-					};
-					1172C9681AF3379C009467AC = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
 				};
@@ -258,7 +322,6 @@
 			targets = (
 				1172C90B1AF2EDAA009467AC /* SwiftSSH2 */,
 				1172C9161AF2EDAA009467AC /* SwiftSSH2Tests */,
-				1172C9681AF3379C009467AC /* libssh2 */,
 			);
 		};
 /* End PBXProject section */
@@ -280,28 +343,21 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		1172C9801AF338AB009467AC /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "script/makeFatBinary\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		1172C9071AF2EDAA009467AC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				114F3C9A1B269BAC0085A810 /* SSHChannel.swift in Sources */,
+				11B3580C1B1CF74A00D9A950 /* SFTPSession.swift in Sources */,
+				1118FB1D1AF5E8E1003B46C6 /* SFTPFileHandle.swift in Sources */,
+				11B3580E1B1D016B00D9A950 /* SockAddressTypeProtocol.swift in Sources */,
+				1118FB1F1AF5E9BA003B46C6 /* SSH2Session.swift in Sources */,
+				1118F99F1AF5A2C4003B46C6 /* SSH2Client.swift in Sources */,
+				11ECD28C1B223D8000E84865 /* File.swift in Sources */,
+				114F3C981B269B260085A810 /* SSH2Channel.swift in Sources */,
+				11A259BA1B25F6CF002011A1 /* Fingerprint.swift in Sources */,
+				11B358121B1F78B200D9A950 /* ConditionalLogging.swift in Sources */,
 				1172C9621AF335DF009467AC /* FileHandle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,7 +366,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1172C91F1AF2EDAA009467AC /* SwiftSSH2Tests.swift in Sources */,
+				1118FB1B1AF5E4B5003B46C6 /* FileHandleSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,16 +492,28 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = External/libssh2/include;
-				INFOPLIST_FILE = SwiftSSH2/Info.plist;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = "include/**";
+				INFOPLIST_FILE = "SwiftSSH2/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					.,
-					External,
+					"$(inherited)",
+					"\"$(SRCROOT)/lib\"",
+					"$(PROJECT_DIR)/lib",
 				);
-				OTHER_LDFLAGS = External/libssh2.a;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lssh2",
+					"-force_load",
+					lib/libssh2.a,
+					"-lcrypto",
+					"-lssl",
+				);
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -462,16 +530,27 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = External/libssh2/include;
-				INFOPLIST_FILE = SwiftSSH2/Info.plist;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				HEADER_SEARCH_PATHS = "include/**";
+				INFOPLIST_FILE = "SwiftSSH2/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					.,
-					External,
+					"$(inherited)",
+					"\"$(SRCROOT)/lib\"",
+					"$(PROJECT_DIR)/lib",
 				);
-				OTHER_LDFLAGS = External/libssh2.a;
+				OTHER_LDFLAGS = (
+					"-lssh2",
+					"-force_load",
+					lib/libssh2.a,
+					"-lcrypto",
+					"-lssl",
+				);
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -485,13 +564,18 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Checkouts/Quick/Externals/Nimble/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Carthage/Checkouts/Quick/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SwiftSSH2Tests/Info.plist;
+				INFOPLIST_FILE = "SwiftSSH2Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs/build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -504,32 +588,15 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Checkouts/Quick/Externals/Nimble/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Carthage/Checkouts/Quick/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = SwiftSSH2Tests/Info.plist;
+				INFOPLIST_FILE = "SwiftSSH2Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		1172C97B1AF3379C009467AC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
+				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/OHHTTPStubs/OHHTTPStubs/build/Debug-iphoneos",
 				);
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		1172C97C1AF3379C009467AC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -559,15 +626,6 @@
 			buildConfigurations = (
 				1172C9261AF2EDAA009467AC /* Debug */,
 				1172C9271AF2EDAA009467AC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1172C97A1AF3379C009467AC /* Build configuration list for PBXNativeTarget "libssh2" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1172C97B1AF3379C009467AC /* Debug */,
-				1172C97C1AF3379C009467AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

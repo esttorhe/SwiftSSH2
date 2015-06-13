@@ -1,24 +1,48 @@
 
-// Native Frameworks
-import Foundation
+public typealias SFTP_Handle = COpaquePointer
 
-//CK2SFTPFileHandle : NSFileHandle
-//{
-//    @private
-//    LIBSSH2_SFTP_HANDLE *_handle;
-//    CK2SFTPSession      *_session;
-//    NSString            *_path;
+public struct FileHandle {
+  private var handle: SFTP_Handle?
+  private let path: String?
+  private let session: SSH2Client?
+  
+  public init(fileHandle _handle: SFTP_Handle, session _session: SSH2Client, path _path: String) {
+    handle = _handle
+    session = _session
+    path = _path
+  }
+  
+  public func write(buffer: UnsafePointer<Int8>, maxLength: Int) -> Int {
+    if let handle = handle {
+      return libssh2_sftp_write(handle, buffer, maxLength)
+    } else {
+      return 0
+    }
+  }
+  
+  public func writeData(data: NSData) -> Result<Int, NSError> {
+    var offset = 0
+    var remainder = data.length
+    
+//    while remainder != 0 {
+//      let bytes: UnsafePointer<()> = data.bytes
+//      let bytesWritten = self.write(UnsafePointer<Int8>(bytes+offset), maxLength: remainder)
+//      if bytesWritten < 0 {
+//        if let session = session {
+//          if let path = path {
+//            if let error = session.sessionError(path: path) {
+//              return Result<Int, NSError>.failure(error)
+//            }
+//          }
+//        }
+//        
+//        return Result<Int, NSError>.failure(NSError(domain: "es.estebantorr.SwiftSSH2", code: -666, userInfo: [NSLocalizedDescriptionKey: "Unable to write data"]))
+//      } else {
+//        offset+=bytesWritten
+//        remainder-=bytesWritten
+//      }
 //    }
-//    
-//    // Session reference & path are not compulsary, but without you won't get decent error information
-//    - (id)initWithSFTPHandle:(LIBSSH2_SFTP_HANDLE *)handle session:(CK2SFTPSession *)session path:(NSString *)path;
-//
-//- (BOOL)closeFile:(NSError **)error;
-//
-//- (BOOL)writeData:(NSData *)data error:(NSError **)error;
-//- (NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length error:(NSError **)error;
-//- (NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length;
-
-public class FileHandle : NSFileHandle {
-//  private var handle: LIBSSH2_SFTP_HANDLE
+    
+    return Result.success(0)
+  }
 }
