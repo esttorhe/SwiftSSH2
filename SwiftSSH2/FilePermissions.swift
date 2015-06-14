@@ -14,9 +14,24 @@ public struct FilePermissionFlag: OptionSetType {
   public let rawValue: UInt32
   public init(rawValue: UInt32) { self.rawValue = rawValue }
   
+  /**
+  `000` None
+  */
   static public let None = FilePermissionFlag(rawValue: 0)
+  
+  /**
+  `001` Execute only
+  */
   static public let Execute = FilePermissionFlag(rawValue: 1)
+  
+  /**
+  `010` Write only
+  */
   static public let Write = FilePermissionFlag(rawValue: 2)
+  
+  /**
+  `100` Read only
+  */
   static public let Read =  FilePermissionFlag(rawValue: 4)
 }
 
