@@ -84,10 +84,6 @@
 		11B3580B1B1CF74A00D9A950 /* SFTPSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFTPSession.swift; sourceTree = "<group>"; };
 		11B3580D1B1D016B00D9A950 /* SockAddressTypeProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SockAddressTypeProtocol.swift; sourceTree = "<group>"; };
 		11B358111B1F78B200D9A950 /* ConditionalLogging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionalLogging.swift; sourceTree = "<group>"; };
-		11CD123F1AF599A000A93EF4 /* CK2SFTPSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CK2SFTPSession.m; path = "../../../ThirdParty/libssh2_sftp-Cocoa-wrapper/CK2SFTPSession.m"; sourceTree = "<group>"; };
-		11CD12401AF599B600A93EF4 /* CK2SFTPSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CK2SFTPSession.h; path = "../../../ThirdParty/libssh2_sftp-Cocoa-wrapper/CK2SFTPSession.h"; sourceTree = "<group>"; };
-		11CD12411AF599F400A93EF4 /* CK2SFTPFileHandle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CK2SFTPFileHandle.h; path = "../../../ThirdParty/libssh2_sftp-Cocoa-wrapper/CK2SFTPFileHandle.h"; sourceTree = "<group>"; };
-		11CD12421AF599F400A93EF4 /* CK2SFTPFileHandle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CK2SFTPFileHandle.m; path = "../../../ThirdParty/libssh2_sftp-Cocoa-wrapper/CK2SFTPFileHandle.m"; sourceTree = "<group>"; };
 		11ECD28B1B223D8000E84865 /* File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,10 +162,6 @@
 				1172C9111AF2EDAA009467AC /* SwiftSSH2.h */,
 				1118FB221AF696CF003B46C6 /* Pointer Wrappers */,
 				1172C90F1AF2EDAA009467AC /* Supporting Files */,
-				11CD12411AF599F400A93EF4 /* CK2SFTPFileHandle.h */,
-				11CD12421AF599F400A93EF4 /* CK2SFTPFileHandle.m */,
-				11CD12401AF599B600A93EF4 /* CK2SFTPSession.h */,
-				11CD123F1AF599A000A93EF4 /* CK2SFTPSession.m */,
 				11B358111B1F78B200D9A950 /* ConditionalLogging.swift */,
 				11ECD28B1B223D8000E84865 /* File.swift */,
 				1172C9611AF335DF009467AC /* FileHandle.swift */,
