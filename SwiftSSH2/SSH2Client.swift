@@ -53,8 +53,10 @@ Manages *all* communication with the host/server.
 public class SSH2Client {
   
   // MARK: Properties
+  
   /// Current `SSH2Session` instance. (`nil` if not yet connected or failed to connect)
   public var session: SSH2Session? = nil
+  
   private var hostaddr: String? = nil
   private var port: Int32
   private let username: String?
@@ -96,7 +98,7 @@ public class SSH2Client {
     self.password = password
     
     // Cannot initialize without a host address or name
-    if hostaddr.characters.count <= 0 {
+    guard hostaddr.characters.count > 0 else {
       println("• Cannot initialize without a host address or name")
       
       return nil
@@ -156,6 +158,45 @@ public class SSH2Client {
     return tupleResult
   }
   
+  /**
+  Opens up a new `SFTP2 Session`.
+  
+  - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
+  If `nil` a previously open internal session will be used or an error will be returned.
+  
+  - returns: An open `SFTPSession` authenticated with `self.session`.
+  
+  - throws `UnableToProceedWithoutValidSSH2Session`: If not a valid `SSH2Session` was found.
+  - throws `SFTP2SessionError`: If unabled to init an `SFTP` session
+  */
+  public func openSFTPSession(session sess: SSH2Session?=nil) throws -> SFTPSession {
+    /**
+    * Parameters validation and local variables declarations
+    */
+    // - Session:
+    let session: SSH2Session
+    switch (sess, self.session) {
+      case (.Some(let parameterSession), _): session = parameterSession
+      case (_, .Some(let selfSession)): session = selfSession
+      default: throw SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot retrieve banner.")
+    }
+    
+    var sftp_session: SFTPSession
+    repeat {
+      sftp_session = SFTPSession(cSFTPSession:libssh2_sftp_init(session.cSession))
+      
+      let sftpStatus = libssh2_session_last_errno(session.cSession)
+      guard sftp_session.cSFTPSession.hashValue != 0 || sftpStatus == LIBSSH2_ERROR_EAGAIN else {
+        let errMsg = "sftp2 session failed: " + String.fromCString(strerror(errno))!
+        println(errMsg)
+
+        throw SwiftSSH2Error.SFTP2SessionError(errMsg)
+      }
+    } while (sftp_session.cSFTPSession.hashValue == 0)
+    
+    return sftp_session
+  }
+  
   
   // MARK: - Connection Settings
   /**
@@ -165,18 +206,22 @@ public class SSH2Client {
   If `nil` a previously open internal session will be used or an error will be returned.
   
   - returns: The host's remote banner (if any) or an error if there's no valid/open `SSH2Session`.
+  
+  - throws: Something something
   */
   public func remoteBanner(session sess: SSH2Session?=nil) throws -> String? {
     /**
     * Parameters validation and local variables declarations
     */
-    var session = SSH2Session() // Adding this to silence compiler warning. Real value results from switch
+    // - Session:
+    let session: SSH2Session
     switch (sess, self.session) {
       case (.Some(let parameterSession), _): session = parameterSession
       case (_, .Some(let selfSession)): session = selfSession
-      default: SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot retrieve banner.")
+      default: throw SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot retrieve banner.")
     }
     
+    // Get the banner from the host
     let banner = libssh2_session_banner_get(session.cSession)
     guard let bannrStr = String.fromCString(banner) else {
       throw SwiftSSH2Error.RetrieveDataOperationError("Unable to retrieve banner from host \(self.hostaddr!)")
@@ -191,11 +236,21 @@ public class SSH2Client {
   // MARK: - Authentication
   
   /**
+  Retrieve *all* supported authentication methods from the `host` for the provided `username`.
+  
+  - parameter username: The username that will be used to retrieve authentication methods for.
+  If `nil` the framework will try to retrieve the `username` from the initialization.
+  
+  - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
+  If `nil` a previously open internal session will be used or an error will be returned.
+  
+  - returns: A list of `String` name for the supported authentication methods for the provided `username`.
   */
-  public func supportedAuthenticationMethods(session sess: SSH2Session?=nil, username usr:String?=nil) throws -> [String] {
+  public func supportedAuthenticationMethodsForUsername(username usr:String?=nil, session sess: SSH2Session?=nil) throws -> [String] {
     /**
     * Parameters validation and local variables declarations
     */
+    // - Session:
     let session: SSH2Session
     switch (sess, self.session) {
       case (.Some(let parameterSession), _): session = parameterSession
@@ -203,6 +258,7 @@ public class SSH2Client {
       default: throw SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot check authentication methods.")
     }
     
+    // - Username:
     let username: String
     switch (usr, self.username) {
       case (.Some(let parameterUsername), _): username = parameterUsername
@@ -223,28 +279,71 @@ public class SSH2Client {
   
   /**
   */
-  public func supportsAuthenticationMethod(method: String, session sess: SSH2Session?=nil) throws -> Bool {
+  public func supportsAuthenticationMethod(method: String, session sess: SSH2Session?=nil, username usr: String?=nil) throws -> Bool {
     /**
     * Parameters validation and local variables declarations
     */
+    // - Session
     let session: SSH2Session
     switch (sess, self.session) {
       case (.Some(let parameterSession), _): session = parameterSession
       case (_, .Some(let selfSession)): session = selfSession
       default: throw SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot check authentication method: \(method)")
     }
+    
+    // - Username:
+    let username: String
+    switch (usr, self.username) {
+      case (.Some(let parameterUsername), _): username = parameterUsername
+      case (_, .Some(let selfUsername)): username = selfUsername
+      default: throw SwiftSSH2Error.AuthenticationFailed("Cannot check authentication methods without valid username")
+    }
    
     // We convert to lowercase to compare methods in same casing
     let lwrMethod = method.lowercaseString
-    return try self.supportedAuthenticationMethods(session: session).filter{$0.lowercaseString == lwrMethod}.count > 0
+    return try self.supportedAuthenticationMethodsForUsername(username: username, session: session).filter{$0.lowercaseString == lwrMethod}.count > 0
   }
   
   /**
+  
   */
-  public func authorizeWithCredentials(session: SSH2Session) throws -> SFTPSession {
-    // Check if we have username and passowrd
-    guard let username = self.username, password = self.password else {
-      throw SwiftSSH2Error.AuthenticationFailed("Cannot authorized without a valid username and password.")
+  public func authorizeWithCredentials(session sess: SSH2Session?=nil, username usr: String?=nil, password passw: String?=nil) throws -> Bool {
+    /**
+    Parameters validation and local variable declarations
+    */
+    // - Session
+    let session: SSH2Session
+      switch (sess, self.session) {
+      case (.Some(let parameterSession), _): session = parameterSession
+      case (_, .Some(let selfSession)): session = selfSession
+      default: throw SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot authorize")
+    }
+    
+    // - Username:
+    let username: String
+    switch (usr, self.username) {
+      case (.Some(let parameterUsername), _): username = parameterUsername
+      case (_, .Some(let selfUsername)): username = selfUsername
+      default: throw SwiftSSH2Error.AuthenticationFailed("Cannot check authentication methods without valid username")
+    }
+    
+    // If there's a password present let's check if password authentication is supported
+    // for the user.
+    if passw != nil {
+      let supportsPasswordAuthentication = try self.supportsAuthenticationMethod("password", session: session)
+      guard supportsPasswordAuthentication else {
+        throw SwiftSSH2Error.AuthenticationFailed("`password` authentication not supported for user: `\(username)` on remote host.")
+      }
+    }
+    
+    // TODO: Add support for other authentication types [Issue: https://github.com/esttorhe/SwiftSSH2/issues/1]
+    // - Password:
+    let password: String
+    switch (passw, self.password) {
+      case (.Some(let parameterPassword), _): password = parameterPassword
+      case (_, .Some(let selfPassword)): password = selfPassword
+      // Currently only supporting password authentication.
+      default: throw SwiftSSH2Error.AuthenticationFailed("Cannot authorized without a valid username and password.")
     }
     
     var rc: Int32 = 0
@@ -259,20 +358,7 @@ public class SSH2Client {
       throw SwiftSSH2Error.AuthenticationFailed(errMsg)
     }
     
-    var sftp_session: SFTPSession
-    repeat {
-      sftp_session = SFTPSession(cSFTPSession:libssh2_sftp_init(session.cSession))
-      
-      let sftpStatus = libssh2_session_last_errno(session.cSession)
-      guard sftp_session.cSFTPSession.hashValue != 0 || sftpStatus == LIBSSH2_ERROR_EAGAIN else {
-        let errMsg = "sftp2 session failed: " + String.fromCString(strerror(errno))!
-        println(errMsg)
-        
-        throw SwiftSSH2Error.SFTP2SessionError(errMsg)
-      }
-    } while (sftp_session.cSFTPSession.hashValue == 0)
-    
-    return sftp_session
+    return true
   }
   
   
