@@ -1,26 +1,50 @@
 
-public enum ClientError: ErrorType {
-  case HandshakeFailed(String)
+/**
+List of possible errors thrown by the framework.
+*/
+public enum SwiftSSH2Error: ErrorType {
+  /**
+  Thrown when `libssh2_session_init_ex` fails.
+  */
   case UnableToCreateUnderlyingLibSSH2Session
-  case HostAddressOrNameNotProvided
-  case GetAddressInfoFailed(String)
-  case UnableToDiscoverServerInformationForHost
-  case UnableToOpenConnectionToServer
-  case ResolvingSymlinkFailed(String)
-  case UnableToListItemsWithoutValidSSH2Session
-  case SFTP2OpenDirectoryFailed(String)
-  case UnableToListItemsAtPath(String)
-  case RemoveDirectoryFailed(String)
-  case CreateDirectoryFailed(String)
-  case CannotAuthorizeWithoutUsernameAndPassword
+  
+  /**
+  Thrown whenever an operation is attempted without a valid `SSH2Session`.
+  */
+  case UnableToProceedWithoutValidSSH2Session(String)
+  
+  /**
+  Throw whenever `libssh2_sftp_init` fails.
+  */
+  case SFTP2SessionError(String)
+  
+  /**
+  Thrown when any host communication fails. 
+    - Connect
+    - Discoverability
+  */
+  case HostError(String)
+  
+  /**
+  Thrown whenever an I/O operation fails.
+    - List directory contents
+    - Create directory
+    - Remove directory
+    - Resolve symlinks
+  */
+  case IOError(String)
+  
+  /**
+  Thrown whenever an authentication operation fails or lacks data to even attempt it.
+  */
   case AuthenticationFailed(String)
-  case SFTP2SessionFailed(String)
-  case UnableToCheckAuthenticationMethodWithoutSession(String)
-  case UnableToCheckAuthenticationMethodsWithoutValidSession
-  case UnableToCheckAuthenticationMethodsWithoutValidUsername
-  case FailedToGetAuthenticationMethodsForHost(String)
-  case UnableToRetrieveBannerWithoutValidSession
-  case UnableToRetrieveBannerFromHost(String)
+  
+  /**
+  Thrown whenever a retrieve operation fails.
+  - Get banner
+  - Retrieve authentication methods
+  */
+  case RetrieveDataOperationError(String)
 }
 
 /**
@@ -103,7 +127,7 @@ public class SSH2Client {
     session = SSH2Session(cSession: cSession)
     
     guard let oSession = self.session else {
-      throw ClientError.UnableToCreateUnderlyingLibSSH2Session
+      throw SwiftSSH2Error.UnableToCreateUnderlyingLibSSH2Session
     }
     
     // Set the session as blocking
@@ -116,10 +140,10 @@ public class SSH2Client {
     
     // Check if the handshake failed
     guard rc == 0 else {
-      let errMsg = "handshake failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "Handshake failed: " + String(UTF8String: strerror(errno))!
       println(errMsg)
       
-      throw ClientError.HandshakeFailed(errMsg)
+      throw SwiftSSH2Error.AuthenticationFailed(errMsg)
     }
     
     // Grab the server fingerprint if possible
@@ -150,12 +174,12 @@ public class SSH2Client {
     switch (sess, self.session) {
       case (.Some(let parameterSession), _): session = parameterSession
       case (_, .Some(let selfSession)): session = selfSession
-      default: ClientError.UnableToRetrieveBannerWithoutValidSession
+      default: SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot retrieve banner.")
     }
     
     let banner = libssh2_session_banner_get(session.cSession)
     guard let bannrStr = String(UTF8String: banner) else {
-      throw ClientError.UnableToRetrieveBannerFromHost(self.hostaddr!)
+      throw SwiftSSH2Error.RetrieveDataOperationError("Unable to retrieve banner from host \(self.hostaddr!)")
     }
 
     println("• Remote host banner: \(bannrStr)")
@@ -176,19 +200,19 @@ public class SSH2Client {
     switch (sess, self.session) {
       case (.Some(let parameterSession), _): session = parameterSession
       case (_, .Some(let selfSession)): session = selfSession
-      default: throw ClientError.UnableToCheckAuthenticationMethodsWithoutValidSession
+      default: throw SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot check authentication methods.")
     }
     
     let username: String
     switch (usr, self.username) {
       case (.Some(let parameterUsername), _): username = parameterUsername
       case (_, .Some(let selfUsername)): username = selfUsername
-      default: throw ClientError.UnableToCheckAuthenticationMethodsWithoutValidUsername
+      default: throw SwiftSSH2Error.AuthenticationFailed("Cannot check authentication methods without valid username")
     }
     
     // Reading the authentication methods from the session
     guard let methodsList:String = String(UTF8String: libssh2_userauth_list(session.cSession, username, UInt32(username.characters.count))) else {
-      throw ClientError.FailedToGetAuthenticationMethodsForHost(self.hostaddr!)
+      throw SwiftSSH2Error.RetrieveDataOperationError("Failed to get authentication method for host \(self.hostaddr!)")
     }
     
     let methods = methodsList.componentsSeparatedByString(",")
@@ -207,7 +231,7 @@ public class SSH2Client {
     switch (sess, self.session) {
       case (.Some(let parameterSession), _): session = parameterSession
       case (_, .Some(let selfSession)): session = selfSession
-      default: throw ClientError.UnableToCheckAuthenticationMethodWithoutSession(method)
+      default: throw SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot check authentication method: \(method)")
     }
    
     // We convert to lowercase to compare methods in same casing
@@ -220,7 +244,7 @@ public class SSH2Client {
   public func authorizeWithCredentials(session: SSH2Session) throws -> SFTPSession {
     // Check if we have username and passowrd
     guard let username = self.username, password = self.password else {
-      throw ClientError.CannotAuthorizeWithoutUsernameAndPassword
+      throw SwiftSSH2Error.AuthenticationFailed("Cannot authorized without a valid username and password.")
     }
     
     var rc: Int32 = 0
@@ -232,7 +256,7 @@ public class SSH2Client {
       let errMsg = "authentication failed: " + String(UTF8String: strerror(errno))!
       println(errMsg)
       
-      throw ClientError.AuthenticationFailed(errMsg)
+      throw SwiftSSH2Error.AuthenticationFailed(errMsg)
     }
     
     var sftp_session: SFTPSession
@@ -244,7 +268,7 @@ public class SSH2Client {
         let errMsg = "sftp2 session failed: " + String(UTF8String: strerror(errno))!
         println(errMsg)
         
-        throw ClientError.SFTP2SessionFailed(errMsg)
+        throw SwiftSSH2Error.SFTP2SessionError(errMsg)
       }
     } while (sftp_session.cSFTPSession.hashValue == 0)
     
@@ -261,20 +285,20 @@ public class SSH2Client {
     let strFlags = flagsStuct.flags
     
     guard let flags = Int(strFlags) else {
-      let errMsg = "remove dir failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "Remove directory failed: " + String(UTF8String: strerror(errno))!
       println(errMsg)
       
-      throw ClientError.RemoveDirectoryFailed(errMsg)
+      throw SwiftSSH2Error.IOError(errMsg)
     }
     
     var result: Int32 = -1
     repeat {
       result = libssh2_sftp_mkdir_ex(sftp_session.cSFTPSession, path, UInt32(path.characters.count), flags)
       guard result >= 0 else {
-        let errMsg = "create dir failed: " + String(UTF8String: strerror(errno))!
+        let errMsg = "Create directory failed: " + String(UTF8String: strerror(errno))!
         println(errMsg)
         
-        throw ClientError.CreateDirectoryFailed(errMsg)
+        throw SwiftSSH2Error.IOError(errMsg)
       }
     
       if result > 0 && createIntermediateDirectories { // && result == LIBSSH2_FX_NO_SUCH_FILE {
@@ -299,10 +323,10 @@ public class SSH2Client {
   */
   public func removeDirectoryAtPath(path: String, sftp_session: SFTPSession) throws -> String {
     guard libssh2_sftp_rmdir_ex(sftp_session.cSFTPSession, path, UInt32(path.characters.count)) == 0 else {
-      let errMsg = "remove dir failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "Remove directory failed: " + String(UTF8String: strerror(errno))!
       println(errMsg)
       
-      throw ClientError.RemoveDirectoryFailed(errMsg)
+      throw SwiftSSH2Error.IOError(errMsg)
     }
     
     return "Successfully deleted directory \(path)"
@@ -316,7 +340,7 @@ public class SSH2Client {
     switch (sess, self.session) {
       case (.Some(let parameterSession), _): session = parameterSession
       case (_, .Some(let selfSession)): session = selfSession
-      default: throw ClientError.UnableToListItemsWithoutValidSSH2Session
+      default: throw SwiftSSH2Error.UnableToProceedWithoutValidSSH2Session("Cannot list items for path: \(sftppath).")
     }
     
     /* Request a dir listing via SFTP */
@@ -328,10 +352,10 @@ public class SSH2Client {
       
       let sftpHandleStatus = libssh2_session_last_errno(session.cSession) != LIBSSH2_ERROR_EAGAIN
       guard (sftp_handle.cFileHandle.hashValue != 0 || !sftpHandleStatus) else {
-        let errMsg = "sftp2 open dir failed: " + String(UTF8String: strerror(errno))!
+        let errMsg = "SFTP2 open directory failed: " + String(UTF8String: strerror(errno))!
         println(errMsg)
         
-        throw ClientError.SFTP2OpenDirectoryFailed(errMsg)
+        throw SwiftSSH2Error.IOError(errMsg)
       }
     } while (sftp_handle.cFileHandle.hashValue == 0)
     
@@ -364,16 +388,16 @@ public class SSH2Client {
             println("\t\t\t• \(file.type) •")
           }
         case (_) where rc < 0: /* There was an error */
-          let errMsg = "sftp2 read dir failed: " + String(UTF8String: strerror(errno))!
+          let errMsg = "SFTP2 read directory failed: " + String(UTF8String: strerror(errno))!
           println(errMsg)
           
-          throw ClientError.UnableToListItemsAtPath(sftppath)
+          throw SwiftSSH2Error.IOError(sftppath)
         default: return result /* We finished reading the directory */
       }
     } while (rc > 0)
 
     // Added to silence compiler warning 
-    throw ClientError.UnableToListItemsAtPath(sftppath)
+    throw SwiftSSH2Error.IOError("Unable to list items at path \(sftppath)")
   }
   
   public func currentDirectoryPath(sftp_session sftp_session: SFTPSession) throws -> String {
@@ -388,7 +412,7 @@ public class SSH2Client {
   internal func discoverAddressInfoForHost() throws -> addrinfo {
     // Local variables initialization
     guard let hostaddr = self.hostaddr else {
-      throw ClientError.HostAddressOrNameNotProvided
+      throw SwiftSSH2Error.HostError("Host address/name not provided.")
     }
     
     /** ========================================================================
@@ -424,14 +448,14 @@ public class SSH2Client {
     }
     
     guard addrInfo == 0 else {
-      let errMsg = ("getaddrinfo failed: " + String(UTF8String: strerror(errno))!)
+      let errMsg = ("Get Address Info Failed: " + String(UTF8String: strerror(errno))!)
       println(errMsg)
       
-      throw ClientError.GetAddressInfoFailed(errMsg)
+      throw SwiftSSH2Error.HostError(errMsg)
     }
     
     guard servInfo.hashValue != 0 && servInfo.memory.hashValue != 0 else {
-      throw ClientError.UnableToDiscoverServerInformationForHost
+      throw SwiftSSH2Error.HostError("Unable to discover server information for host.")
     }
     
     return servInfo.memory.memory
@@ -473,7 +497,7 @@ public class SSH2Client {
     
     // No valid socket was found
     guard sock != -1 else {
-      throw ClientError.UnableToOpenConnectionToServer
+      throw SwiftSSH2Error.HostError("Unable to open connection to server.")
     }
     
     return sock
@@ -504,14 +528,14 @@ public class SSH2Client {
     } while(pathLength == LIBSSH2_ERROR_BUFFER_TOO_SMALL)
     
     guard pathLength >= 0 else {
-      let errMsg = "resolving symlink failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "Resolving symlink failed: " + String(UTF8String: strerror(errno))!
       println(errMsg)
 
-      throw ClientError.ResolvingSymlinkFailed(errMsg)
+      throw SwiftSSH2Error.IOError(errMsg)
     }
 
     guard let pathName = String.fromCString(buffer) else {
-      throw ClientError.ResolvingSymlinkFailed("Cannot retrieve path name for path: \(path)")
+      throw SwiftSSH2Error.IOError("Cannot retrieve path name for path: \(path)")
     }
     
     println("• Current Path: \(pathName)")
