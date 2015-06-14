@@ -142,7 +142,6 @@
 				1172C90E1AF2EDAA009467AC /* SwiftSSH2 */,
 				1172C91B1AF2EDAA009467AC /* SwiftSSH2Tests */,
 				1172C9601AF335A7009467AC /* Libraries */,
-				1118FB071AF5BF9C003B46C6 /* libssh2 */,
 				1172C90D1AF2EDAA009467AC /* Products */,
 			);
 			indentWidth = 2;
@@ -207,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				1118F9B61AF5BE03003B46C6 /* libssh2.a */,
+				1118FB071AF5BF9C003B46C6 /* libssh2 */,
 				1118F9B21AF5BDE7003B46C6 /* gcrypt.framework */,
 				1118F9B31AF5BDE7003B46C6 /* openssl.framework */,
 				11474F771B2CD1E600F750C4 /* Nimble.framework */,

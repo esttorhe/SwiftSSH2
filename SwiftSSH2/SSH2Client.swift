@@ -140,7 +140,7 @@ public class SSH2Client {
     
     // Check if the handshake failed
     guard rc == 0 else {
-      let errMsg = "Handshake failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "Handshake failed: " + String.fromCString(strerror(errno))!
       println(errMsg)
       
       throw SwiftSSH2Error.AuthenticationFailed(errMsg)
@@ -178,7 +178,7 @@ public class SSH2Client {
     }
     
     let banner = libssh2_session_banner_get(session.cSession)
-    guard let bannrStr = String(UTF8String: banner) else {
+    guard let bannrStr = String.fromCString(banner) else {
       throw SwiftSSH2Error.RetrieveDataOperationError("Unable to retrieve banner from host \(self.hostaddr!)")
     }
 
@@ -211,7 +211,7 @@ public class SSH2Client {
     }
     
     // Reading the authentication methods from the session
-    guard let methodsList:String = String(UTF8String: libssh2_userauth_list(session.cSession, username, UInt32(username.characters.count))) else {
+    guard let methodsList:String = String.fromCString(libssh2_userauth_list(session.cSession, username, UInt32(username.characters.count))) else {
       throw SwiftSSH2Error.RetrieveDataOperationError("Failed to get authentication method for host \(self.hostaddr!)")
     }
     
@@ -253,7 +253,7 @@ public class SSH2Client {
     } while (rc == LIBSSH2_ERROR_EAGAIN)
     
     guard rc == 0 else {
-      let errMsg = "authentication failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "authentication failed: " + String.fromCString(strerror(errno))!
       println(errMsg)
       
       throw SwiftSSH2Error.AuthenticationFailed(errMsg)
@@ -265,7 +265,7 @@ public class SSH2Client {
       
       let sftpStatus = libssh2_session_last_errno(session.cSession)
       guard sftp_session.cSFTPSession.hashValue != 0 || sftpStatus == LIBSSH2_ERROR_EAGAIN else {
-        let errMsg = "sftp2 session failed: " + String(UTF8String: strerror(errno))!
+        let errMsg = "sftp2 session failed: " + String.fromCString(strerror(errno))!
         println(errMsg)
         
         throw SwiftSSH2Error.SFTP2SessionError(errMsg)
@@ -285,7 +285,7 @@ public class SSH2Client {
     let strFlags = flagsStuct.flags
     
     guard let flags = Int(strFlags) else {
-      let errMsg = "Remove directory failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "Remove directory failed: " + String.fromCString(strerror(errno))!
       println(errMsg)
       
       throw SwiftSSH2Error.IOError(errMsg)
@@ -295,7 +295,7 @@ public class SSH2Client {
     repeat {
       result = libssh2_sftp_mkdir_ex(sftp_session.cSFTPSession, path, UInt32(path.characters.count), flags)
       guard result >= 0 else {
-        let errMsg = "Create directory failed: " + String(UTF8String: strerror(errno))!
+        let errMsg = "Create directory failed: " + String.fromCString(strerror(errno))!
         println(errMsg)
         
         throw SwiftSSH2Error.IOError(errMsg)
@@ -323,7 +323,7 @@ public class SSH2Client {
   */
   public func removeDirectoryAtPath(path: String, sftp_session: SFTPSession) throws -> String {
     guard libssh2_sftp_rmdir_ex(sftp_session.cSFTPSession, path, UInt32(path.characters.count)) == 0 else {
-      let errMsg = "Remove directory failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "Remove directory failed: " + String.fromCString(strerror(errno))!
       println(errMsg)
       
       throw SwiftSSH2Error.IOError(errMsg)
@@ -352,7 +352,7 @@ public class SSH2Client {
       
       let sftpHandleStatus = libssh2_session_last_errno(session.cSession) != LIBSSH2_ERROR_EAGAIN
       guard (sftp_handle.cFileHandle.hashValue != 0 || !sftpHandleStatus) else {
-        let errMsg = "SFTP2 open directory failed: " + String(UTF8String: strerror(errno))!
+        let errMsg = "SFTP2 open directory failed: " + String.fromCString(strerror(errno))!
         println(errMsg)
         
         throw SwiftSSH2Error.IOError(errMsg)
@@ -388,7 +388,7 @@ public class SSH2Client {
             println("\t\t\t• \(file.type) •")
           }
         case (_) where rc < 0: /* There was an error */
-          let errMsg = "SFTP2 read directory failed: " + String(UTF8String: strerror(errno))!
+          let errMsg = "SFTP2 read directory failed: " + String.fromCString(strerror(errno))!
           println(errMsg)
           
           throw SwiftSSH2Error.IOError(sftppath)
@@ -448,7 +448,7 @@ public class SSH2Client {
     }
     
     guard addrInfo == 0 else {
-      let errMsg = ("Get Address Info Failed: " + String(UTF8String: strerror(errno))!)
+      let errMsg = ("Get Address Info Failed: " + String.fromCString(strerror(errno))!)
       println(errMsg)
       
       throw SwiftSSH2Error.HostError(errMsg)
@@ -473,7 +473,7 @@ public class SSH2Client {
       // Let's try to create a socket with the discovered info
       let sockfd = socket(p.ai_family, p.ai_socktype, p.ai_protocol)
       if (sockfd == -1) {
-        println("• socket failed: " + String(UTF8String: strerror(errno))!)
+        println("• socket failed: " + String.fromCString(strerror(errno))!)
        
         // Move to the next possible addrinfo
         if p.ai_next.hashValue != 0 { p = p.ai_next.memory; continue }
@@ -484,7 +484,7 @@ public class SSH2Client {
       let connectStatus = connect(sockfd, address: p.ai_addr.memory)
       if (connectStatus == -1) {
         close(sockfd)
-        println("• connect failed: " + String(UTF8String: strerror(errno))!)
+        println("• connect failed: " + String.fromCString(strerror(errno))!)
         
         // Move to the next possible addrinfo
         if p.ai_next.hashValue != 0 { p = p.ai_next.memory; continue }
@@ -528,7 +528,7 @@ public class SSH2Client {
     } while(pathLength == LIBSSH2_ERROR_BUFFER_TOO_SMALL)
     
     guard pathLength >= 0 else {
-      let errMsg = "Resolving symlink failed: " + String(UTF8String: strerror(errno))!
+      let errMsg = "Resolving symlink failed: " + String.fromCString(strerror(errno))!
       println(errMsg)
 
       throw SwiftSSH2Error.IOError(errMsg)
