@@ -1,4 +1,8 @@
 
+/**
+  Taken from jckarter's gist to use `sockaddr_in` «as» `sockaddr`
+  - https://gist.github.com/jckarter/45389481b0f37207c2fb
+*/
 public protocol SocketAddressType {}
 
 extension sockaddr: SocketAddressType {}

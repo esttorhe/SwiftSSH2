@@ -26,6 +26,7 @@
 		1172C9121AF2EDAA009467AC /* SwiftSSH2.h in Headers */ = {isa = PBXBuildFile; fileRef = 1172C9111AF2EDAA009467AC /* SwiftSSH2.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1172C9181AF2EDAA009467AC /* SwiftSSH2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1172C90C1AF2EDAA009467AC /* SwiftSSH2.framework */; };
 		1172C9621AF335DF009467AC /* FileHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1172C9611AF335DF009467AC /* FileHandle.swift */; };
+		119C36611B2D28E200889AC3 /* FilePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C36601B2D28E200889AC3 /* FilePermissions.swift */; };
 		11A259BA1B25F6CF002011A1 /* Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A259B91B25F6CF002011A1 /* Fingerprint.swift */; };
 		11B3580C1B1CF74A00D9A950 /* SFTPSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B3580B1B1CF74A00D9A950 /* SFTPSession.swift */; };
 		11B3580E1B1D016B00D9A950 /* SockAddressTypeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B3580D1B1D016B00D9A950 /* SockAddressTypeProtocol.swift */; };
@@ -79,6 +80,7 @@
 		1172C9611AF335DF009467AC /* FileHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileHandle.swift; sourceTree = "<group>"; };
 		1172C9631AF33681009467AC /* SwiftSSH2.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = SwiftSSH2.modulemap; sourceTree = "<group>"; };
 		1172C9811AF42668009467AC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		119C36601B2D28E200889AC3 /* FilePermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilePermissions.swift; sourceTree = "<group>"; };
 		11A259B81B252FE3002011A1 /* SwiftSSH2.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftSSH2.playground; sourceTree = "<group>"; };
 		11A259B91B25F6CF002011A1 /* Fingerprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fingerprint.swift; sourceTree = "<group>"; };
 		11B3580B1B1CF74A00D9A950 /* SFTPSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFTPSession.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				11A259B91B25F6CF002011A1 /* Fingerprint.swift */,
 				11B3580D1B1D016B00D9A950 /* SockAddressTypeProtocol.swift */,
 				1118F99E1AF5A2C4003B46C6 /* SSH2Client.swift */,
+				119C36601B2D28E200889AC3 /* FilePermissions.swift */,
 				114F3C991B269BAC0085A810 /* SSHChannel.swift */,
 			);
 			path = SwiftSSH2;
@@ -330,6 +333,7 @@
 				11B3580C1B1CF74A00D9A950 /* SFTPSession.swift in Sources */,
 				1118FB1D1AF5E8E1003B46C6 /* SFTPFileHandle.swift in Sources */,
 				11B3580E1B1D016B00D9A950 /* SockAddressTypeProtocol.swift in Sources */,
+				119C36611B2D28E200889AC3 /* FilePermissions.swift in Sources */,
 				1118FB1F1AF5E9BA003B46C6 /* SSH2Session.swift in Sources */,
 				1118F99F1AF5A2C4003B46C6 /* SSH2Client.swift in Sources */,
 				11ECD28C1B223D8000E84865 /* File.swift in Sources */,
