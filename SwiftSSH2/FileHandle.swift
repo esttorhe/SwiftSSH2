@@ -20,7 +20,7 @@ public struct FileHandle {
     }
   }
   
-  public func writeData(data: NSData) -> Result<Int, NSError> {
+  public func writeData(data: NSData) throws -> Int {
     var offset = 0
     var remainder = data.length
     
@@ -43,6 +43,6 @@ public struct FileHandle {
 //      }
 //    }
     
-    return Result.success(0)
+    return 0
   }
 }

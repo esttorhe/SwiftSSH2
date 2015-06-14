@@ -1,5 +1,5 @@
 
-framework module SwiftGit2 {
+framework module SwiftSSH2 {
   umbrella header "SwiftSSH2.h"
   
   header "libssh2/libssh2.h"

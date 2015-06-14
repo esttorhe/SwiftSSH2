@@ -1,7 +1,4 @@
 
-// Dynamic Frameworks
-import Result
-
 /**
 */
 public enum PTYTerminal: String {
@@ -24,6 +21,10 @@ public enum ChannelType {
   case Subsystem
 }
 
+public enum ChannelError: ErrorType {
+  case UnableToOpenChannelSession
+}
+
 /**
 */
 public class SSHChannel {
@@ -42,17 +43,17 @@ public class SSHChannel {
   
   /**
   */
-  public func openChannel(channel: SSH2Channel?=nil) -> Result<SSH2Channel, String> {
+  public func openChannel(channel: SSH2Channel?=nil) throws -> SSH2Channel {
     libssh2_session_set_blocking(session.cSession, 10)
     
     let windowSize: UInt32 = 256*1024
     let cChannel = libssh2_channel_open_ex(session.cSession, "session", UInt32("session".characters.count - 1), windowSize, UInt32(LIBSSH2_CHANNEL_PACKET_DEFAULT), UnsafePointer<Int8>(), UInt32(0))
     self.channel = SSH2Channel(channel: cChannel)
     
-    if cChannel.hashValue == 0 {
-      return Result.failure("Unable to open a channel session.")
+    guard cChannel.hashValue == 0 else {
+      throw ChannelError.UnableToOpenChannelSession
     }
     
-    return Result.failure("")
+    return self.channel!
   }
 }

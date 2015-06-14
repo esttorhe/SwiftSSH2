@@ -81,7 +81,7 @@ public enum Fingerprint: Equatable {
       return (i > 9) ? (charA + i - 10) : (char0 + i)
     }
     
-    var pf = UnsafeMutablePointer<UInt8>.alloc(1)
+    let pf = UnsafeMutablePointer<UInt8>.alloc(1)
     for i in 0..<length {
       pf[i*3] = itoh((buf[i] >> 4) & 0xF)
       pf[i*3+1] = itoh(buf[i] & 0xF)

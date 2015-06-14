@@ -1,7 +1,4 @@
 
-// Dynamic Frameworks
-import Result
-
 /**
 A «model» structure that will hold instances of files, directories, symlinks, etc.
 */

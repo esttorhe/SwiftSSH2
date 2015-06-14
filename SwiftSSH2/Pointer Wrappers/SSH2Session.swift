@@ -6,7 +6,9 @@ public class SSH2Session {
     self.cSession = cSession
   }
   
+  public init() { self.cSession = nil }
+  
   deinit {
-    libssh2_free(cSession, UnsafeMutablePointer<Void>())
+    if self.cSession != nil { libssh2_free(cSession, UnsafeMutablePointer<Void>()) }
   }
 }

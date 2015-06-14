@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Esteban Torres. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import Foundation;
 
 //! Project version number for SwiftSSH2.
 FOUNDATION_EXPORT double SwiftSSH2VersionNumber;
