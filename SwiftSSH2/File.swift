@@ -34,41 +34,45 @@ public struct File {
     type = NSFileTypeUnknown
     name = ""
     
-    // Extract the flags
-//    let flags = UInt8(bitPattern: Int8(attrs.flags))
-//    if (flags & UInt8(bitPattern: Int8(LIBSSH2_SFTP_ATTR_PERMISSIONS))) == 0 {
-//      /* this should check what permissions it
-//      is and print the output accordingly */
-//      println("--fix----- ");
-//    } else {
-//      println("---------- ");
-//    }
-//    
-//    if (flags & UInt8(bitPattern: Int8(LIBSSH2_SFTP_ATTR_UIDGID))) == 0 {
-//      println("\(attrs.uid) - \(attrs.gid)");
-//    } else {
-//      println("   -    - ");
-//    }
-//    
-//    if (flags & UInt8(bitPattern: Int8(LIBSSH2_SFTP_ATTR_SIZE))) == 0 {
-//      println("\(attrs.filesize)")
-//    }
-    
     // Extract the filename from the buffer
-    if let filename = String(UTF8String: buffer) {
-      // Exclude . and .. as they're not Cocoa-like
-      if filename == "." || filename == ".." {
-        return nil
+    guard let filename = String.fromCString(buffer) else {
+      return nil
+    }
+    
+    // Exclude . and .. as they're not Cocoa-like
+    guard filename != "." && filename != ".." else {
+      return nil
+    }
+    
+    // Extract the flags
+    let flags = UInt8(bitPattern: Int8(attrs.flags))
+    if (flags & UInt8(bitPattern: Int8(LIBSSH2_SFTP_ATTR_PERMISSIONS))) == 0 {
+      /* this should check what permissions it
+      is and print the output accordingly */
+      println("--fix----- ");
+    } else {
+      println("---------- ");
+    }
+    
+    // Store the filename
+    self.name = filename
+    print("• \(filename)")
+    
+    if let longe = longentry {
+      if let longename = String.fromCString(longe) {
+        print("\t \(longename)")
       }
-      
-      self.name = filename
-      print("• \(filename)")
-      
-      if let longe = longentry {
-        if let longename = String(UTF8String: longe) {
-          println("\t\t \(longename)")
-        }
-      }
+    }
+
+    // Check for uid & gid flag
+    if (flags & UInt8(bitPattern: Int8(LIBSSH2_SFTP_ATTR_UIDGID))) == 0 {
+      let tmp = String(format: "%4ld %4ld", arguments: [attrs.uid, attrs.gid])
+      println(tmp);
+    }
+    
+    // Check for size flag
+    if (flags & UInt8(bitPattern: Int8(LIBSSH2_SFTP_ATTR_SIZE))) == 0 {
+      println("\(attrs.filesize)")
     }
     
     // Extract the permissions flags from the attributes
