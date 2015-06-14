@@ -8,3 +8,12 @@ I'm currently working on this whenever I have the time and I'm updating it so I 
 
 
 __Add something clever here describing how and why__
+<br/><br />
+
+___
+# TODO:
+- [ ] Better rewrite to take advantage of `Swift 2.0` features
+- [ ] Keep adding missing functions (like Channels, etc)
+- [ ] Make tests public (currently testing with personal server)
+- [ ] Add `OS X` support
+- [ ] Right better `README`
