@@ -483,6 +483,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				HEADER_SEARCH_PATHS = "include/**";
 				INFOPLIST_FILE = "SwiftSSH2/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -522,6 +524,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				HEADER_SEARCH_PATHS = "include/**";
 				INFOPLIST_FILE = "SwiftSSH2/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -555,6 +560,8 @@
 					"$(PROJECT_DIR)/Carthage/Checkouts/Quick/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -577,6 +584,8 @@
 					"$(PROJECT_DIR)/Carthage/Checkouts/Quick/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				INFOPLIST_FILE = "SwiftSSH2Tests/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
