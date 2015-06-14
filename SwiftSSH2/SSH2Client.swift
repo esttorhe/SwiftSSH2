@@ -24,27 +24,6 @@ public enum ClientError: ErrorType {
 }
 
 /**
-  Basic `*nix` `chmod` permissions set.
-  - `7`	read, write and execute	`111`
-  - `6`	read and write	 `110`
-  - `5`	read and execute	 `101`
-  - `4`	read only	`100`
-  - `3`	write and execute	`011`
-  - `2`	write only	 `010`
-  - `1`	execute only	 `001`
-  - `0`	none	`000`
-*/
-public struct FilePermission: OptionSetType {
-  public let rawValue: UInt32
-  public init(rawValue: UInt32) { self.rawValue = rawValue }
-  
-  static public let None = FilePermission(rawValue: 0)
-  static public let Execute = FilePermission(rawValue: 1)
-  static public let Write = FilePermission(rawValue: 2)
-  static public let Read =  FilePermission(rawValue: 4)
-}
-
-/**
 Manages *all* communication with the host/server. 
 */
 public class SSH2Client {
@@ -277,11 +256,11 @@ public class SSH2Client {
   
   /**
   */
-  public func createDirectoryAtPath(path: String, createIntermediateDirectories: Bool=false, sftp_session: SFTPSession, mode: (owner: UInt32, group: UInt32, everyone: UInt32)) throws -> String {
-    let str = "\(mode.owner)\(mode.group)\(mode.everyone)"
-    println("• File permission: \(str)")
+  public func createDirectoryAtPath(path: String, createIntermediateDirectories: Bool=false, sftp_session: SFTPSession, flags flagsStuct: FilePermission) throws -> String {
+    // Convert to string
+    let strFlags = flagsStuct.flags
     
-    guard let flags = Int(str) else {
+    guard let flags = Int(strFlags) else {
       let errMsg = "remove dir failed: " + String(UTF8String: strerror(errno))!
       println(errMsg)
       
