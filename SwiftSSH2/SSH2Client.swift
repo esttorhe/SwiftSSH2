@@ -1,49 +1,49 @@
 
-/**
-List of possible errors thrown by the framework.
-*/
+///
+/// List of possible errors thrown by the framework.
+///
 public enum SwiftSSH2Error: ErrorType {
-  /**
-  Thrown when `libssh2_session_init_ex` fails.
-  */
+  ///
+  /// Thrown when `libssh2_session_init_ex` fails.
+  ///
   case UnableToCreateUnderlyingLibSSH2Session
   
-  /**
-  Thrown whenever an operation is attempted without a valid `SSH2Session`.
-  */
+  ///
+  /// Thrown whenever an operation is attempted without a valid `SSH2Session`.
+  ///
   case UnableToProceedWithoutValidSSH2Session(String)
   
-  /**
-  Throw whenever `libssh2_sftp_init` fails.
-  */
+  ///
+  /// Throw whenever `libssh2_sftp_init` fails.
+  ///
   case SFTP2SessionError(String)
   
-  /**
-  Thrown when any host communication fails. 
-    - Connect
-    - Discoverability
-  */
+  ///
+  /// Thrown when any host communication fails.
+  ///   - Connect
+  ///   - Discoverability
+  ///
   case HostError(String)
   
-  /**
-  Thrown whenever an I/O operation fails.
-    - List directory contents
-    - Create directory
-    - Remove directory
-    - Resolve symlinks
-  */
+  ///
+  /// Thrown whenever an I/O operation fails.
+  ///   - List directory contents
+  ///   - Create directory
+  ///   - Remove directory
+  ///   - Resolve symlinks
+  ///
   case IOError(String)
   
-  /**
-  Thrown whenever an authentication operation fails or lacks data to even attempt it.
-  */
+  ///
+  /// Thrown whenever an authentication operation fails or lacks data to even attempt it.
+  ///
   case AuthenticationFailed(String)
   
-  /**
-  Thrown whenever a retrieve operation fails.
-  - Get banner
-  - Retrieve authentication methods
-  */
+  ///
+  /// Thrown whenever a retrieve operation fails.
+  /// - Get banner
+  /// - Retrieve authentication methods
+  ///
   case RetrieveDataOperationError(String)
 }
 
@@ -107,22 +107,21 @@ public class SSH2Client {
 
   // MARK: - Connection
   
-  /**
-  Start interacting with the provided `host`.
-  
-  - parameter hash: A `Fingerprint` hash specifying what type of hash will be used when
-  getting the fingerprint back from the server.
-  If none provided will default to `.MD5`
-  
-  - returns: A `Result` with a tuple of (SSH2Session, Fingerprint) for the current 
-  host if succeeds or `String` describing the current error.
-
-  - throws `UnableToCreateUnderlyingLibSSH2Session`: When `libssh2_session_init` fails.
-  - throws `AuthenticationFailed`: When the `handshake` with the host fails.
-  - throws `HostError`: 
-    + When unable to establish a socket with the host.
-    + When unable to discover address information for the server provided.
-  */
+  ///
+  /// Start interacting with the provided `host`.
+  ///
+  /// - parameter hash: A `Fingerprint` hash specifying what type of hash will be used when
+  /// getting the fingerprint back from the server.
+  /// If none provided will default to `.MD5`
+  ///
+  /// - returns: A `Result` with a tuple of (SSH2Session, Fingerprint) for the current
+  /// host if succeeds or `String` describing the current error.
+  /// - Warning:
+  ///   - throws `UnableToCreateUnderlyingLibSSH2Session`: When `libssh2_session_init` fails.
+  ///   - throws `AuthenticationFailed`: When the `handshake` with the host fails.
+  ///   - throws `HostError`:
+  ///     + When unable to establish a socket with the host.
+  ///     + When unable to discover address information for the server provided.
   public func startConnection(hash: Fingerprint.Hash=Fingerprint.Hash.MD5) throws -> (SSH2Session, Fingerprint) {
     let addrInfo = try self.discoverAddressInfoForHost()
     let sock = try self.connectToSocketUsing(addrInfo: addrInfo)
@@ -164,17 +163,16 @@ public class SSH2Client {
     return tupleResult
   }
   
-  /**
-  Opens up a new `SFTP2 Session`.
-  
-  - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
-  If `nil` a previously open internal session will be used or an error will be returned.
-  
-  - returns: An open `SFTPSession` authenticated with `self.session`.
-  
-  - throws `UnableToProceedWithoutValidSSH2Session`: If not a valid `SSH2Session` was found.
-  - throws `SFTP2SessionError`: If unabled to init an `SFTP` session
-  */
+  /// Opens up a new `SFTP2 Session`.
+  ///
+  /// - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
+  /// If `nil` a previously open internal session will be used or an error will be returned.
+  ///
+  /// - returns: An open `SFTPSession` authenticated with `self.session`.
+  ///
+  /// - Warning:
+  ///   - throws `UnableToProceedWithoutValidSSH2Session`: If not a valid `SSH2Session` was found.
+  ///   - throws `SFTP2SessionError`: If unabled to init an `SFTP` session
   public func openSFTPSession(session sess: SSH2Session?=nil) throws -> SFTPSession {
     /**
     * Parameters validation and local variables declarations
@@ -205,17 +203,16 @@ public class SSH2Client {
   
   
   // MARK: - Connection Settings
-  /**
-  Retrieves the remove banner from the server (if any).
-  
-  - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
-  If `nil` a previously open internal session will be used or an error will be returned.
-  
-  - returns: The host's remote banner (if any) or an error if there's no valid/open `SSH2Session`.
-  
-  - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
-  - throws `RetrieveDataOperationError`: When the host returns an invalid banner.
-  */
+  /// Retrieves the remove banner from the server (if any).
+  ///
+  /// - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
+  /// If `nil` a previously open internal session will be used or an error will be returned.
+  ///
+  /// - returns: The host's remote banner (if any) or an error if there's no valid/open `SSH2Session`.
+  ///
+  /// - Warning:
+  ///   - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
+  ///   - throws `RetrieveDataOperationError`: When the host returns an invalid banner.
   public func remoteBanner(session sess: SSH2Session?=nil) throws -> String? {
     /**
     * Parameters validation and local variables declarations
@@ -242,21 +239,20 @@ public class SSH2Client {
   
   // MARK: - Authentication
   
-  /**
-  Retrieve *all* supported authentication methods from the `host` for the provided `username`.
-  
-  - parameter username: The username that will be used to retrieve authentication methods for.
-  If `nil` the framework will try to retrieve the `username` from the initialization.
-  
-  - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
-  If `nil` a previously open internal session will be used or an error will be returned.
-  
-  - returns: A list of `String` name for the supported authentication methods for the provided `username`.
-  
-  - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
-  - throws `AuthenticationFailed`: When no valid `username` was passed or found internally.
-  - throws `RetrieveDataOperationError`: When unabled to check authentication methods for the host and username combination.
-  */
+  /// Retrieve *all* supported authentication methods from the `host` for the provided `username`.
+  ///
+  /// - parameter username: The username that will be used to retrieve authentication methods for.
+  /// If `nil` the framework will try to retrieve the `username` from the initialization.
+  ///
+  /// - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
+  /// If `nil` a previously open internal session will be used or an error will be returned.
+  ///
+  /// - returns: A list of `String` name for the supported authentication methods for the provided `username`.
+  /// 
+  /// - Warning:
+  ///   - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
+  ///   - throws `AuthenticationFailed`: When no valid `username` was passed or found internally.
+  ///   - throws `RetrieveDataOperationError`: When unabled to check authentication methods for the host and username combination.
   public func supportedAuthenticationMethodsForUsername(username usr:String?=nil, session sess: SSH2Session?=nil) throws -> [String] {
     /**
     * Parameters validation and local variables declarations
@@ -288,19 +284,18 @@ public class SSH2Client {
     return methods
   }
   
-  /**
-  Checks if the `host` supports the provided authentication `method` for the provided `username`.
-  
-  - parameter method: The name of the authentication method to check against the available methods on the host for the provided `username`.
-  - parameter username: The username that will be used to retrieve authentication methods for.
-  If `nil` the framework will try to retrieve the `username` from the initialization.
-  - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
-  If `nil` a previously open internal session will be used or an error will be returned.
-  
-  - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
-  - throws `AuthenticationFailed`: When no valid `username` was passed or found internally.
-  - throws `RetrieveDataOperationError`: When unabled to check authentication methods for the host and username combination.
-  */
+  /// Checks if the `host` supports the provided authentication `method` for the provided `username`.
+  ///
+  /// - parameter method: The name of the authentication method to check against the available methods on the host for the provided `username`.
+  /// - parameter username: The username that will be used to retrieve authentication methods for.
+  /// If `nil` the framework will try to retrieve the `username` from the initialization.
+  /// - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
+  /// If `nil` a previously open internal session will be used or an error will be returned.
+  /// 
+  /// - Warnings:
+  ///   - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
+  ///   - throws `AuthenticationFailed`: When no valid `username` was passed or found internally.
+  ///   - throws `RetrieveDataOperationError`: When unabled to check authentication methods for the host and username combination.
   public func supportsAuthenticationMethod(method: String, session sess: SSH2Session?=nil, username usr: String?=nil) throws -> Bool {
     /**
     * Parameters validation and local variables declarations
@@ -326,22 +321,21 @@ public class SSH2Client {
     return try self.supportedAuthenticationMethodsForUsername(username: username, session: session).filter{$0.lowercaseString == lwrMethod}.count > 0
   }
   
-  /**
-  Authorize agains the provided `host` using `username` & `password`.
-  
-  - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
-  If `nil` a previously open internal session will be used or an error will be returned.
-  - parameter username: The username that will be used to authenticate with on the host.
-  If `nil` the framework will try to retrieve the `username` from the initialization.
-  - parameter password: The password that will be used to authenticate with on the host.
-  If `nil` the framework will try to retrieve the `username` from the initialization.
-  
-  - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
-  - throws `AuthenticationFailed`: 
-    + When no valid `username` was passed or found internally.
-    + When remote host doesn't support `password` authentication for the provided `username`.
-    + When there's no match on the remote server for the `username` & `password` provided.
-  */
+  /// Authorize agains the provided `host` using `username` & `password`.
+  ///
+  /// - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
+  /// If `nil` a previously open internal session will be used or an error will be returned.
+  /// - parameter username: The username that will be used to authenticate with on the host.
+  /// If `nil` the framework will try to retrieve the `username` from the initialization.
+  /// - parameter password: The password that will be used to authenticate with on the host.
+  /// If `nil` the framework will try to retrieve the `username` from the initialization.
+  /// 
+  /// - Warnings:
+  ///   - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
+  ///   - throws `AuthenticationFailed`:
+  ///     + When no valid `username` was passed or found internally.
+  ///     + When remote host doesn't support `password` authentication for the provided `username`.
+  ///     + When there's no match on the remote server for the `username` & `password` provided.
   public func authorizeWithCredentials(session sess: SSH2Session?=nil, username usr: String?=nil, password passw: String?=nil) throws -> Bool {
     /**
     Parameters validation and local variable declarations
@@ -399,8 +393,18 @@ public class SSH2Client {
   
   // MARK: - Directories
   
-  /**
-  */
+  /// Create a directory at the specified `path`.
+  ///
+  /// - parameter path: The full path where we want to create the folder.
+  ///
+  /// - parameter createIntermediateDirectories: `Boolean` flag that specifies if we want to create the intermediate
+  ///   directories or not.
+  ///
+  /// - parameter sftp_session: A valid `SFTP2Session` that will be used to create the directory.
+  /// 
+  /// - Warnings:
+  ///   - throws `IOError`: When the directory creation fails.
+  ///     + _If `createIntermediateDirectories` is set to true it will only `throw` on the last path component._
   public func createDirectoryAtPath(path: String, createIntermediateDirectories: Bool=false, sftp_session: SFTPSession) throws -> () {
     /********************************************************************************
     ** Temporarily removed parameter >> flags flagsStuct: FilePermission
@@ -465,8 +469,14 @@ public class SSH2Client {
     }
   }
   
-  /**
-  */
+  /// Deletes the directory at `path`.
+  ///
+  /// - parameter path: The full path of the folder to be deleted.
+  ///
+  /// - parameter sftp_session: A valid `SFTP2Session` that will be used to delete the directory.
+  /// 
+  /// - Warnings:
+  ///   - throws `IOError`: When the directory deletion fails.
   public func removeDirectoryAtPath(path: String, sftp_session: SFTPSession) throws -> String {
     guard libssh2_sftp_rmdir_ex(sftp_session.cSFTPSession, path, UInt32(path.characters.count)) == 0 else {
       let errMsg = "Remove directory failed: " + String.fromCString(strerror(errno))!
@@ -478,9 +488,21 @@ public class SSH2Client {
     return "Successfully deleted directory \(path)"
   }
 
-  /**
-  */
-  public func listItemsOnPath(path sftppath: String, sftp_session: SFTPSession, sess: SSH2Session? = nil) throws -> [File] {
+  /// Lists all the items (files & folders) of the directory at `path`.
+  ///
+  /// - parameter session: A valid `SSH2Session` that will be used to retrieve the items.
+  ///   If `nil` a previously open internal session will be used or an error will be returned.
+  ///
+  /// - parameter path: The full path of the folder we want to inspect.
+  ///
+  /// - parameter sftp_session: A valid `SFTP2Session` that will be used to create the directory.
+  /// 
+  /// - Warnings:
+  ///   - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was found.
+  ///   - throws `IOError`:
+  ///     + When unable to open the directory specified on `path`.
+  ///     + When unable to read the directory specified on `path`.
+  public func listItemsOnPath(path sftppath: String, sftp_session: SFTPSession, session sess: SSH2Session? = nil) throws -> [File] {
     // Support injecting an `SSH2Session` for testing purposes
     let session: SSH2Session
     switch (sess, self.session) {
