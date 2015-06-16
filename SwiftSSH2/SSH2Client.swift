@@ -47,14 +47,16 @@ public enum SwiftSSH2Error: ErrorType {
   case RetrieveDataOperationError(String)
 }
 
-/**
-Manages *all* communication with the host/server. 
-*/
+///
+/// Manages *all* communication with the host/server.
+///
 public class SSH2Client {
   
   // MARK: Properties
   
+  ///
   /// Current `SSH2Session` instance. (`nil` if not yet connected or failed to connect)
+  ///
   public var session: SSH2Session? = nil
   
   private var hostaddr: String? = nil
@@ -62,10 +64,8 @@ public class SSH2Client {
   private let username: String?
   private let password: String?
   
-  /**
-  Property that determines if the session was provided with `password`.
-  If it was we assume the authorization to be password; if not then certificate.
-  */
+  /// Property that determines if the session was provided with `password`.
+  /// If it was we assume the authorization to be password; if not then certificate.
   private var authorizeWithPassword: Bool {
     get {
       switch password {
@@ -76,20 +76,20 @@ public class SSH2Client {
   }
   
   // MARK: Initializers
-  /**
-  Initializes an `SSHClient` instance with the parameters provided.
-  
-  - parameter host: The host/server address or name to which we'll be connecting.
-  
-  - parameter port: The `host` port to which we'll try to connect.
-  
-  - parameter username: The username we'll use to authenticate with the `host`.
-  
-  - parameter password: The password we'll use to authenticate with against the `host` (if any).
-  
-  - returns: Returns a fully initialized client ready to start connecting or `nil`
-  if no valid host address/name was provided.
-  */
+  ///
+  /// Initializes an `SSHClient` instance with the parameters provided.
+  ///
+  /// - parameter host: The host/server address or name to which we'll be connecting.
+  ///
+  /// - parameter port: The `host` port to which we'll try to connect.
+  ///
+  /// - parameter username: The username we'll use to authenticate with the `host`.
+  ///
+  /// - parameter password: The password we'll use to authenticate with against the `host` (if any).
+  ///
+  /// - returns: Returns a fully initialized client ready to start connecting or `nil`
+  /// if no valid host address/name was provided.
+  ///
   public init?(host hostaddr: String, port: Int32 = 22, username: String? = nil, password: String? = nil) {
     // Assigning all properties to silence compiler warning
     self.hostaddr = hostaddr
@@ -122,6 +122,7 @@ public class SSH2Client {
   ///   - throws `HostError`:
   ///     + When unable to establish a socket with the host.
   ///     + When unable to discover address information for the server provided.
+  ///
   public func startConnection(hash: Fingerprint.Hash=Fingerprint.Hash.MD5) throws -> (SSH2Session, Fingerprint) {
     let addrInfo = try self.discoverAddressInfoForHost()
     let sock = try self.connectToSocketUsing(addrInfo: addrInfo)
@@ -174,9 +175,9 @@ public class SSH2Client {
   ///   - throws `UnableToProceedWithoutValidSSH2Session`: If not a valid `SSH2Session` was found.
   ///   - throws `SFTP2SessionError`: If unabled to init an `SFTP` session
   public func openSFTPSession(session sess: SSH2Session?=nil) throws -> SFTPSession {
-    /**
+    /********************************************************
     * Parameters validation and local variables declarations
-    */
+    *********************************************************/
     // - Session:
     let session: SSH2Session
     switch (sess, self.session) {
@@ -203,6 +204,7 @@ public class SSH2Client {
   
   
   // MARK: - Connection Settings
+  
   /// Retrieves the remove banner from the server (if any).
   ///
   /// - parameter session: A valid `SSH2Session` that will be used to retrieve the banner.
@@ -214,9 +216,9 @@ public class SSH2Client {
   ///   - throws `UnableToProceedWithoutValidSSH2Session`: When no valid `SSH2Session` was passed or found internally.
   ///   - throws `RetrieveDataOperationError`: When the host returns an invalid banner.
   public func remoteBanner(session sess: SSH2Session?=nil) throws -> String? {
-    /**
+    /********************************************************
     * Parameters validation and local variables declarations
-    */
+    *********************************************************/
     // - Session:
     let session: SSH2Session
     switch (sess, self.session) {
@@ -254,9 +256,9 @@ public class SSH2Client {
   ///   - throws `AuthenticationFailed`: When no valid `username` was passed or found internally.
   ///   - throws `RetrieveDataOperationError`: When unabled to check authentication methods for the host and username combination.
   public func supportedAuthenticationMethodsForUsername(username usr:String?=nil, session sess: SSH2Session?=nil) throws -> [String] {
-    /**
+    /********************************************************
     * Parameters validation and local variables declarations
-    */
+    *********************************************************/
     // - Session:
     let session: SSH2Session
     switch (sess, self.session) {
@@ -297,9 +299,9 @@ public class SSH2Client {
   ///   - throws `AuthenticationFailed`: When no valid `username` was passed or found internally.
   ///   - throws `RetrieveDataOperationError`: When unabled to check authentication methods for the host and username combination.
   public func supportsAuthenticationMethod(method: String, session sess: SSH2Session?=nil, username usr: String?=nil) throws -> Bool {
-    /**
+    /********************************************************
     * Parameters validation and local variables declarations
-    */
+    *********************************************************/
     // - Session
     let session: SSH2Session
     switch (sess, self.session) {
@@ -337,9 +339,9 @@ public class SSH2Client {
   ///     + When remote host doesn't support `password` authentication for the provided `username`.
   ///     + When there's no match on the remote server for the `username` & `password` provided.
   public func authorizeWithCredentials(session sess: SSH2Session?=nil, username usr: String?=nil, password passw: String?=nil) throws -> Bool {
-    /**
-    Parameters validation and local variable declarations
-    */
+    /********************************************************
+    * Parameters validation and local variables declarations
+    *********************************************************/
     // - Session
     let session: SSH2Session
       switch (sess, self.session) {
@@ -575,8 +577,18 @@ public class SSH2Client {
   // MARK: - Internal Helpers
   // MARK: Sockets
   
-  /**
-  */
+  /// 
+  /// Using the `host` from initialization call `getaddrinfo` to retrieve information
+  /// about the host/address, protocol type, etc.
+  ///
+  /// - returns: An `addrinfo` structure containing the connection information for the 
+  /// provided `host`.
+  ///
+  /// - Warning:
+  ///   - throws `HostError`:
+  ///     + When `getaddrinfo` fails to retrieve any data.
+  ///     + When the «retrieve» data is empty (unable to read data for the host).
+  ///
   internal func discoverAddressInfoForHost() throws -> addrinfo {
     // Local variables initialization
     guard let hostaddr = self.hostaddr else {
@@ -589,7 +601,7 @@ public class SSH2Client {
     * Radar link here: http://openradar.me/21275861
     * ========================================================================*/
     // Get address info
-/*******************************************************************************
+    /*******************************************************************************
     let host:CFHost! = CFHostCreateWithName(kCFAllocatorDefault, hostaddr).takeRetainedValue()
     let error = UnsafeMutablePointer<CFStreamError>.alloc(1)
     if CFHostStartInfoResolution(host, CFHostInfoType.Addresses, error) {
@@ -598,11 +610,11 @@ public class SSH2Client {
       
       host.release()
     }
-*******************************************************************************/
+    *******************************************************************************/
     
-    // Hints Structure to «discover» the server info
+    // Let's configure the base hints structure that we want to use to
+    // «discover» the server info matching.
     var hints = addrinfo()
-    hints.ai_family = AF_INET
     hints.ai_socktype = SOCK_STREAM
     let unsafePointer = UnsafeMutablePointer<addrinfo>.alloc(1)
     unsafePointer.initialize(hints)
@@ -629,13 +641,24 @@ public class SSH2Client {
     return servInfo.memory.memory
   }
   
-  /**
-  */
+  /// 
+  /// Connect/open a socket using the provided `addrinfo` as guide.
+  ///
+  /// - parameter addrInfo: The `addrinfo` structure containing all the information
+  /// required to connect to the `host`.
+  ///
+  /// - returns: A fully initialiazed and «open» `libssh2_socket_t` to the `host`.
+  ///
+  /// - Warning:
+  ///   - throws `HostError`: When unable to establish a connection with the `host` using
+  ///   the provided `addrInfo` structure.
+  ///
   internal func connectToSocketUsing(addrInfo addrInfo: addrinfo) throws -> libssh2_socket_t {
     // loop through all the results and connect to the first we can
     var p:addrinfo = addrInfo
     var sock: libssh2_socket_t = -1
     
+    // TODO: Rewrite this block in a clearer/«prettier» way. Currently looks like a «hack» [Issue: https://github.com/esttorhe/SwiftSSH2/issues/2]
     // Iterate through the list of addrinfo
     while true {
       // Let's try to create a socket with the discovered info
@@ -673,8 +696,8 @@ public class SSH2Client {
   
   // MARK: Paths
   
-  /**
-  */
+  ///
+  /// 
   public func destinationOfSimbolicLinkAtPath(path: String, sftp_session: SFTPSession) throws -> String {
     return try self.resolveSymlink(sftp_session, path: path, complex: false)
   }
