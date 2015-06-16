@@ -401,7 +401,10 @@ public class SSH2Client {
   
   /**
   */
-  public func createDirectoryAtPath(path: String, createIntermediateDirectories: Bool=false, sftp_session: SFTPSession, flags flagsStuct: FilePermission) throws -> String {
+  public func createDirectoryAtPath(path: String, createIntermediateDirectories: Bool=false, sftp_session: SFTPSession) throws -> () {
+    /********************************************************************************
+    ** Temporarily removed parameter >> flags flagsStuct: FilePermission
+    *********************************************************************************
     // Convert to string
     let strFlags = flagsStuct.flags
     
@@ -411,33 +414,55 @@ public class SSH2Client {
       
       throw SwiftSSH2Error.IOError(errMsg)
     }
-    
+    */
     var result: Int32 = -1
+    var err: SwiftSSH2Error? = nil
+    
+    // Iterate while result is positive or LIBSSH2_ERROR_EAGAIN
     repeat {
-      result = libssh2_sftp_mkdir_ex(sftp_session.cSFTPSession, path, UInt32(path.characters.count), flags)
-      guard result >= 0 else {
-        let errMsg = "Create directory failed: " + String.fromCString(strerror(errno))!
-        println(errMsg)
+      if !createIntermediateDirectories {
+        // Try to create the directory
+        result = libssh2_sftp_mkdir_ex(sftp_session.cSFTPSession, path, UInt32(path.characters.count),
+          Int(LIBSSH2_SFTP_S_IRWXU | LIBSSH2_SFTP_S_IRGRP | LIBSSH2_SFTP_S_IXGRP | LIBSSH2_SFTP_S_IROTH | LIBSSH2_SFTP_S_IXOTH))
+        guard result >= 0 else {
+          let errMsg = "Create directory failed: " + String.fromCString(strerror(errno))!
+          println(errMsg)
+          
+          throw SwiftSSH2Error.IOError(errMsg)
+        }
         
-        throw SwiftSSH2Error.IOError(errMsg)
-      }
+        println("• Created directory at path: \(path)")
+      } else { // Split the paths and try to create from «outer» to «inner».
+        path.pathComponents.reduce("") { combined, component -> String in
+          let currentPath: String = combined.stringByAppendingPathComponent(component)
+          do {
+            try self.createDirectoryAtPath(currentPath, createIntermediateDirectories: false, sftp_session: sftp_session)
     
-      if result > 0 && createIntermediateDirectories { // && result == LIBSSH2_FX_NO_SUCH_FILE {
-          //            for pathComponent in path.pathComponents {
-          //              self.createDirectoryAtPath(pathComponent, createIntermediateDirectories: createIntermediateDirectories, sftp_session: sftp_session, mode: mode) >>- {
-          //                result -> Result<String, String> in
-          //                println(result)
-          //
-          //                return Result.success(result)
-          //              }
-          //            }
-          //            let parent = path.stringByDeletingLastPathComponent
-          //
-          //            return self.createDirectoryAtPath(parent, createIntermediateDirectories: createIntermediateDirectories, sftp_session: sftp_session, mode: mode)
+            return currentPath
+          } catch {
+            // Some of the intermediate folders might fail.
+            let errMsg = "[\(result)] Create directory failed: " + String.fromCString(strerror(errno))!
+            println(errMsg)
+            
+            /**************************************************************************
+            // Sadly there's no way for us to know if it failed due to something 
+            // else other than the directory already exists.
+            // We have to take the positive approach and assume it failed due to that.
+            // Only check for the last path component
+            **************************************************************************/
+            if component == path.pathComponents.last {
+              err = SwiftSSH2Error.IOError(errMsg)
+            }
+          }
+          
+          return currentPath
+        }
       }
-    } while (result > 0)
+    } while (result > 0 || result == LIBSSH2_ERROR_EAGAIN)
     
-    return "Successfully created directory at path \(path)"
+    if let error = err {
+      throw error
+    }
   }
   
   /**
