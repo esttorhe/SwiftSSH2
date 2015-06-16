@@ -697,13 +697,37 @@ public class SSH2Client {
   // MARK: Paths
   
   ///
-  /// 
+  /// Resolves the symbolic link specified at `path`.
+  ///
+  /// - parameter path: The full path of the symlink we want to resolve.
+  ///
+  /// - parameter sftp_session: A valid `SFTP2Session` that will be used to create the directory.
+  ///
+  /// - returns: The fully «expanded» path for the symlink at `path`.
+  ///
+  /// - Warning:
+  ///   - throws `IOError`:
+  ///     + When unable to resolve the symlink of the path from the host.
+  ///     + When unable to read the «resolved» path name.
+  ///
   public func destinationOfSimbolicLinkAtPath(path: String, sftp_session: SFTPSession) throws -> String {
     return try self.resolveSymlink(sftp_session, path: path, complex: false)
   }
   
-  /**
-  */
+  ///
+  /// Resolves the symbolic link specified at `path`.
+  ///
+  /// - parameter path: The full path of the symlink we want to resolve.
+  ///
+  /// - parameter sftp_session: A valid `SFTP2Session` that will be used to create the directory.
+  ///
+  /// - returns: The fully «expanded» path for the symlink at `path`.
+  ///
+  /// - Warning:
+  ///   - throws `IOError`:
+  ///     + When unable to resolve the symlink of the path from the host.
+  ///     + When unable to read the «resolved» path name.
+  ///
   internal func resolveSymlink(sftp_session: SFTPSession, path: String, complex: Bool=true) throws -> String {
     let buffer: UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>.alloc(1)
     var pathLength: Int32 = 0
