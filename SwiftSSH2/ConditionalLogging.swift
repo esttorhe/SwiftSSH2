@@ -5,7 +5,7 @@
 */
 func println(object: Any) {
   #if DEBUG
-    Swift.print(object, appendNewline: true)
+    Swift.print(object, terminator: "\n")
   #endif
 }
 
@@ -15,6 +15,6 @@ when `-D DEBUG` is set on `Other Swift Flags`.
 */
 func print(object: Any) {
   #if DEBUG
-    Swift.print(object, appendNewline: false)
+    Swift.print(object, terminator: "")
   #endif
 }

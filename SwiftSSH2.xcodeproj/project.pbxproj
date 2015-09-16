@@ -145,10 +145,6 @@
 		1172C9021AF2EDAA009467AC = {
 			isa = PBXGroup;
 			children = (
-				118673BD1BAA0C4B00140F1E /* Nimble.framework */,
-				118673BE1BAA0C4B00140F1E /* Nimble.framework */,
-				118673B91BAA0C4200140F1E /* Quick.framework */,
-				118673BA1BAA0C4200140F1E /* Quick.framework */,
 				1172C90E1AF2EDAA009467AC /* SwiftSSH2 */,
 				1172C91B1AF2EDAA009467AC /* SwiftSSH2Tests */,
 				1172C9601AF335A7009467AC /* Libraries */,
@@ -220,6 +216,10 @@
 				1118F9B21AF5BDE7003B46C6 /* gcrypt.framework */,
 				1118F9B31AF5BDE7003B46C6 /* openssl.framework */,
 				1172C9811AF42668009467AC /* libz.dylib */,
+				118673BD1BAA0C4B00140F1E /* Nimble.framework */,
+				118673BE1BAA0C4B00140F1E /* Nimble.framework */,
+				118673B91BAA0C4200140F1E /* Quick.framework */,
+				118673BA1BAA0C4200140F1E /* Quick.framework */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
