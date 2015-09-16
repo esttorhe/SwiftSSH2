@@ -423,6 +423,7 @@ public class SSH2Client {
     */
     var result: Int32 = -1
     var err: SwiftSSH2Error? = nil
+    let url = NSURL(string: path)!
     
     // Iterate while result is positive or LIBSSH2_ERROR_EAGAIN
     repeat {
@@ -439,12 +440,18 @@ public class SSH2Client {
         
         println("• Created directory at path: \(path)")
       } else { // Split the paths and try to create from «outer» to «inner».
-        path.pathComponents.reduce("") { combined, component -> String in
-          let currentPath: String = combined.stringByAppendingPathComponent(component)
-          do {
-            try self.createDirectoryAtPath(currentPath, createIntermediateDirectories: false, sftp_session: sftp_session)
+        let _ = url.pathComponents!.reduce("") { combined, component -> String in
+          let currentPath: NSURL
+          if combined.characters.count > 0 {
+            currentPath = NSURL(string: combined)!.URLByAppendingPathComponent(component)
+          } else {
+            currentPath = NSURL(string: component)!
+          }
     
-            return currentPath
+          do {
+            try self.createDirectoryAtPath(currentPath.absoluteString, createIntermediateDirectories: false, sftp_session: sftp_session)
+    
+            return currentPath.absoluteString
           } catch {
             // Some of the intermediate folders might fail.
             let errMsg = "[\(result)] Create directory failed: " + String.fromCString(strerror(errno))!
@@ -456,12 +463,12 @@ public class SSH2Client {
             // We have to take the positive approach and assume it failed due to that.
             // Only check for the last path component
             **************************************************************************/
-            if component == path.pathComponents.last {
+            if component == url.pathComponents!.last {
               err = SwiftSSH2Error.IOError(errMsg)
             }
           }
           
-          return currentPath
+          return currentPath.absoluteString
         }
       }
     } while (result > 0 || result == LIBSSH2_ERROR_EAGAIN)
