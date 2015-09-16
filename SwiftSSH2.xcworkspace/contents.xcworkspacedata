@@ -2,12 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:SwiftSSH2.xcodeproj">
+      location = "group:Carthage/Checkouts/Nimble/Nimble.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Carthage/Checkouts/Quick/Quick.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Carthage/Checkouts/Quick/Externals/Nimble/Nimble.xcodeproj">
+      location = "container:SwiftSSH2.xcodeproj">
    </FileRef>
 </Workspace>

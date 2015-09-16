@@ -1,6 +1,6 @@
 #import "QCKSpecRunner.h"
 #import "XCTestObservationCenter+QCKSuspendObservation.h"
-
+#import "World.h"
 #import <Quick/Quick.h>
 
 XCTestRun *qck_runSuite(XCTestSuite *suite) {
@@ -8,7 +8,15 @@ XCTestRun *qck_runSuite(XCTestSuite *suite) {
 
     __block XCTestRun *result = nil;
     [[XCTestObservationCenter sharedTestObservationCenter] _suspendObservationForBlock:^{
-        result = [suite run];
+        if ([suite respondsToSelector:@selector(runTest)]) {
+            [suite runTest];
+            result = suite.testRun;
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            result = [suite run];
+#pragma clang diagnostic pop
+        }
     }];
     return result;
 }
